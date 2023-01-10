@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
+@Builder
 @Table(name ="user_info")
 public class UserInfoEntity {
   @Id
@@ -26,7 +28,7 @@ public class UserInfoEntity {
   @Column(name ="ui_name") private String uiName;
   @Column(name ="ui_email") private String uiEmail;
   @Column(name ="ui_phone") private String uiPhone;
-  @Column(name ="ui_birth") private LocalDate uiBrith;
+  @Column(name ="ui_birth") private LocalDate uiBirth;
   @Column(name ="ui_gen") private Integer uiGen;
   @Column(name ="ui_grade") private Integer uiGrade;
   @Column(name ="ui_status") private Integer uiStatus;
