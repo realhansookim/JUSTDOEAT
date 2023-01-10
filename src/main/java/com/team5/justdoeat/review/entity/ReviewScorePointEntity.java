@@ -2,6 +2,7 @@ package com.team5.justdoeat.review.entity;
 
 import org.hibernate.annotations.DynamicInsert;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,10 +12,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+// @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "review_score_point")
@@ -27,6 +31,19 @@ public class ReviewScorePointEntity {
   @Column(name = "rsp_taste_score") private Double rspTasteScore;
   @Column(name = "rsp_quantity_score") private Double rspQuantityScore;
   @Column(name = "rsp_delivery_score") private Double rspDeliveryScore;
-  @Column(name = "rsp_ri_seq") private Long rspRiSeq;
+  // @Column(name = "rsp_ri_seq") private Long rspRiSeq;
+  
   // @OneToOne @JoinColumn(name = "rsp_ri_seq") ReviewInfoEntity reviewInfo;
+
+  // @Builder
+  // public ReviewScorePointEntity(Double rspAllScore,Double rspTasteScore,
+  // Double rspQuantityScore,Double rspDeliveryScore,ReviewInfoEntity reviewInfo){
+  // (cascade = CascadeType.PERSIST)
+  // }
+  public ReviewScorePointEntity(Double rspAllScore, Double rspTasteScore, Double rspQuantityScore, Double rspDeliveryScore){
+      this.rspAllScore = rspAllScore ;
+      this.rspTasteScore = rspTasteScore ;
+      this.rspQuantityScore = rspQuantityScore;
+      this.rspDeliveryScore = rspDeliveryScore ;
+  }
 }
