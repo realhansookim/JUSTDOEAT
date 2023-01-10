@@ -1,6 +1,5 @@
 package com.team5.justdoeat.user.repository;
 
-<<<<<<< HEAD
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
