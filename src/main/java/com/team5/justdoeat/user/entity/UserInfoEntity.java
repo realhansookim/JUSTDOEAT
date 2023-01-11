@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 @Entity
-@Builder
 @Table(name ="user_info")
 public class UserInfoEntity {
   @Id

@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,10 @@ import com.team5.justdoeat.store.entity.StoreInfoEntity;
 import com.team5.justdoeat.store.repository.StoreCategoryConnectRepository;
 import com.team5.justdoeat.store.repository.StoreCategoryInfoRepository;
 import com.team5.justdoeat.store.repository.StoreDetailRepository;
-import com.team5.justdoeat.store.repository.StoreImageRepository;
 import com.team5.justdoeat.store.repository.StoreInfoRepository;
 
 @Service
-public class service {
-   
+public class StoreService {
     @Autowired StoreCategoryConnectRepository storeCateRepo;
     @Autowired StoreCategoryInfoRepository storeCateInfoRepo;
     @Autowired StoreDetailRepository sDetailRepo;
@@ -31,18 +31,41 @@ public class service {
         return resultMap;
     }
 
+    public Map<String, Object> getStoreInfoList(Pageable pageable) {
+        Page<StoreInfoEntity> page = sInfoRepo.getStoreInfoList(pageable);
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap.put("totalPage", page.getTotalPages());
+        resultMap.put("currentPage", page.getNumber() + 1);
+        resultMap.put("totalCount", page.getTotalElements());
+        resultMap.put("list", page.getContent());
+        return resultMap;
+    }
+
+    public Map<String, Object> getStoreDetailList(Pageable pageable) {
+        Page<StoreDetailEntity> page = sDetailRepo.getStoreDetailList(pageable);
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap.put("totalPage", page.getTotalPages());
+        resultMap.put("currentPage", page.getNumber() + 1);
+        resultMap.put("totalCount", page.getTotalElements());
+        resultMap.put("list", page.getContent());
+        return resultMap;
+    }
+
     public Map<String, Object> addStoreInfo(StoreInfoEntity data) {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         sInfoRepo.save(data);
         map.put("status", true);
+        map.put("message", "데이터가 저장되었습니다.");
         map.put("code", HttpStatus.CREATED);
         return map;
     }
+
     public Map<String, Object> addStoreDetail(StoreDetailEntity data) {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         sDetailRepo.save(data);
         map.put("status", true);
+        map.put("message", "데이터가 저장되었습니다.");
         map.put("code", HttpStatus.CREATED);
         return map;
-      }
+    }
 }

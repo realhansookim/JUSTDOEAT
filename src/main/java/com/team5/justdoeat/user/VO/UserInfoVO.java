@@ -26,7 +26,7 @@ public class UserInfoVO {
     this.name = entity.getUiName();
     this.email = entity.getUiEmail();
     this.phone = entity.getUiPhone();
-    this.birth = entity.getUiBrith();
+    this.birth = entity.getUiBirth();
     this.gen = entity.getUiGen();
     this.grade = entity.getUiGrade();
     this.status = entity.getUiStatus();
