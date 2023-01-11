@@ -20,29 +20,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Builder
 @Table(name = "store_info")
+@Builder
 public class StoreInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "si_seq")               private Long siSeq;
-    @Column(name = "si_name")              private String siName;
-    @Column(name = "si_min_delivery_time") private String siMinDeliveryTime;
-    @Column(name = "si_max_delivery_time") private String siMaxDeliveryTime;
-    @Column(name = "si_main_img")          private String siMainImg;
-    @Column(name = "si_status")            private Integer siStatus;
-    @Column(name = "si_order_cnt")         private Integer siOrderCnt;
-    // @Column(name = "si_ui_seq")            private Integer siUiSeq;
-    // @Column(name = "si_sd_seq")            private Long siSdSeq;
-    // @OneToOne @JoinColumn(name = "si_sd_seq") StoreDetailEntity storeDetailList;
+    @Column(name = "si_seq")                private Long siSeq;
+    @Column(name = "si_name")               private String siName;
+    @Column(name = "si_min_delivery_time")  private String siMinDeliveryTime;
+    @Column(name = "si_max_delivery_time")  private String siMaxDeliveryTime;
+    @Column(name = "si_main_img")           private String siMainImg;
+    @Column(name = "si_status")             private Integer siStatus;
+    @Column(name = "si_order_cnt")          private Integer siOrderCnt;
+    @Column(name = "si_ui_seq")             private Integer siUiSeq;
+    @Column(name = "si_sd_seq")             private Long siSdSeq;
 
     // 연쇄입력을 위해 join 키 설정
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "si_sd_seq")
-    StoreDetailEntity storeDetailList;
+    // @OneToOne(cascade = CascadeType.PERSIST)
+    // @JoinColumn(name = "si_sd_seq")
+    // StoreDetailEntity storeDetailList;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "si_ui_seq")
-    UserInfoEntity userInfoList;
+    // @OneToOne(cascade = CascadeType.PERSIST)
+    // @JoinColumn(name = "si_ui_seq")
+    // UserInfoEntity userInfoList;
 
 }
