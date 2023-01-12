@@ -22,14 +22,17 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team5.justdoeat.menu.entity.MenuCateConnectEntity;
 import com.team5.justdoeat.menu.entity.MenuImageInfoEntity;
 import com.team5.justdoeat.menu.entity.MenuInfoEntity;
+import com.team5.justdoeat.menu.entity.MenuOptionEntity;
+import com.team5.justdoeat.menu.repository.MenuCateConnectRepository;
 import com.team5.justdoeat.menu.repository.MenuImageInfoRepository;
 import com.team5.justdoeat.menu.repository.MenuInfoRepository;
 import com.team5.justdoeat.menu.repository.MenuOptionRepository;
-import com.team5.justdoeat.menu.repository.StoreInfoRepository;
-import com.team5.justdoeat.menu.service.MenuService;
 
+import com.team5.justdoeat.menu.service.MenuService;
+import com.team5.justdoeat.store.repository.StoreInfoRepository;
 
 import org.springframework.core.io.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,6 +50,7 @@ public class MenuController {
   @Autowired MenuInfoRepository mRepo;
   @Autowired StoreInfoRepository sRepo;
   @Autowired MenuOptionRepository optionRepo;
+  @Autowired MenuCateConnectRepository cateConnectRepo;
   @Value("${file.image.menu}") String menu_img;
   @Autowired MenuImageInfoRepository imageRepo;
 
@@ -139,6 +143,7 @@ public class MenuController {
           .body(r);
     }
 
+    // 조회시 옵션정보 연결하여 같이 표시
     @GetMapping("/list")
     public Map<String, Object> getMenuList(@RequestParam @Nullable String keyword) {
       Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
@@ -148,5 +153,12 @@ public class MenuController {
       resultMap.put("totalCount", list.size());
       resultMap.put("list", list);
       return resultMap;
+  }
+
+  @GetMapping("/option")
+    public Map<String, Object> getCate() {
+    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    resultMap.put("list", cateConnectRepo.findAll());
+    return resultMap;
   }
 }

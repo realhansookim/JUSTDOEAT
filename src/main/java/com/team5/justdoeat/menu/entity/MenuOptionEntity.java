@@ -2,6 +2,8 @@ package com.team5.justdoeat.menu.entity;
 
 import org.hibernate.annotations.DynamicInsert;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,10 +26,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MenuOptionEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "mo_seq") private Long moSeq;
+  @Column(name = "mo_seq") @JsonIgnore private Long moSeq;
   @Column(name = "mo_name") private String moName;
   @Column(name = "mo_price") private Integer moPrice;
-  @Column(name = "mo_mi_seq") private Long moMiSeq;
+  @Column(name = "mo_mi_seq") @JsonIgnore private Long moMiSeq;
   // @ManyToOne @JoinColumn(name = "mo_mi_seq") MenuInfoEntity menuInfo;
 
 }
