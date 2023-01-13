@@ -17,4 +17,5 @@ private String userPwd;
 private Long storeSeq;
 private Long menuOptionSeq;
 private String storeOrder;
+
 }

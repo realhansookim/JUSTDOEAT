@@ -27,7 +27,7 @@ import com.team5.justdoeat.menu.entity.MenuInfoEntity;
 import com.team5.justdoeat.menu.repository.MenuImageInfoRepository;
 import com.team5.justdoeat.menu.repository.MenuInfoRepository;
 import com.team5.justdoeat.menu.repository.MenuOptionRepository;
-import com.team5.justdoeat.menu.repository.StoreInfoRepository;
+import com.team5.justdoeat.store.repository.StoreInfoRepository;
 import com.team5.justdoeat.menu.service.MenuService;
 
 

@@ -2,6 +2,9 @@ package com.team5.justdoeat.user.entity;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,10 +18,10 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Data
 @Entity
 @Builder
+@DynamicInsert
 @Table(name ="user_info")
 public class UserInfoEntity {
   @Id
@@ -31,6 +34,6 @@ public class UserInfoEntity {
   @Column(name ="ui_phone") private String uiPhone;
   @Column(name ="ui_birth") private LocalDate uiBirth;
   @Column(name ="ui_gen") private Integer uiGen;
-  @Column(name ="ui_grade") private Integer uiGrade;
-  @Column(name ="ui_status") private Integer uiStatus;
+  @Column(name ="ui_grade") @ColumnDefault("1") private Integer uiGrade;
+  @Column(name ="ui_status") @ColumnDefault("1") private Integer uiStatus;
 }

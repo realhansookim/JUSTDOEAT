@@ -1,143 +1,110 @@
 package com.team5.justdoeat.user.api;
 
+
+
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.team5.justdoeat.review.vo.LoginUserVO;
+import com.team5.justdoeat.user.VO.FindVO;
 import com.team5.justdoeat.user.VO.LoginVo;
 import com.team5.justdoeat.user.VO.UserInfoVO;
 import com.team5.justdoeat.user.entity.UserInfoEntity;
 import com.team5.justdoeat.user.repository.UserInfoRepository;
 import com.team5.justdoeat.user.service.UserInfoService;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
-@Controller
 
 
+@RestController
+@RequestMapping("/member")
 public class UserInfoAPIController {
 
-  @Autowired UserInfoService uService;
   @Autowired UserInfoRepository userRepo;
+  @Autowired UserInfoService uService;
 
-@GetMapping("/")
-public String getMain(){
-  return "/index";
-}
+  @PutMapping("/join")
+  public ResponseEntity<Object> putUserJOin(@RequestBody UserInfoEntity data){
+    Map<String,Object> map = uService.addUser(data);
 
-@GetMapping("/login")
-public String getLogin(HttpServletRequest response){
-  response.setAttribute("Cache-Control", "no-cache, no-store,must-revalidate");
-  response.setAttribute("Program", "no-cache");
-  response.setAttribute("Expires", "0");
-  return "/login";
-}
-@PostMapping("/login")
-public String postLogin(String id,String pwd, Model model,HttpSession session){
-  UserInfoEntity loginUser = userRepo.findByUiIdAndUiPwd(id, pwd);
-  if(loginUser == null){
-    model.addAttribute("loginStatus", "failed");
-    model.addAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-    return "/login";
+    return new ResponseEntity<Object>(map,(HttpStatus)map.get("code"));
   }
-  session.setAttribute("loginUser",new LoginVo(loginUser));
-  return "redirect:/";
-}
 
-@GetMapping("/join")
-public String getUSerJoin(){
-  return "/user/join";
-}
+  @PostMapping("/login")
 
-@PostMapping("/join")
-public String postLogin(Model model,String id, String pwd, String name){
+  public ResponseEntity<Object> userlogin(@RequestBody LoginVo data) {
+    Map<String, Object> map = new LinkedHashMap<String, Object>();
 
-      userRepo.save((UserInfoEntity.builder().uiId(id).uiPwd(pwd).uiName(name).build()));
-   
-      return "/login";
+    UserInfoEntity loginUser = userRepo.findByUiIdAndUiPwd(data.getId(), data.getPwd());
+    System.out.println(loginUser);
+    if (loginUser == null) {
+      map.put("status", false);
+      map.put("msg", "아이디 또는 비밀번호를 확인해주세요");
+      return new ResponseEntity<>(map, HttpStatus.UNAUTHORIZED);
     }
+    map.put("status", true);
+    map.put("msg", "로그인되었습니다.");
+    map.put("user", loginUser);
+    return new ResponseEntity<>(map, HttpStatus.CREATED);
+
+  }
+  @GetMapping("/list")
+  
+  public ResponseEntity<Object> getProductList(Pageable pageable) {
+
+    Map<String, Object> map = new LinkedHashMap<String, Object>();
+    map.put(("list"), userRepo.findAll(pageable));
+    return new ResponseEntity<>(map, HttpStatus.CREATED);
+  }
+
+  @PutMapping("/findid")
+  public ResponseEntity<Object> userId(@RequestBody UserInfoEntity data){
+    Map<String,Object> map = new LinkedHashMap<String,Object>();
+    List<UserInfoEntity> findUser = userRepo.findByUiNameAndUiEmail(data.getUiName(), data.getUiEmail());
+    System.out.println(findUser);
+    if(findUser == null){
+      map.put("status", false);
+      map.put("msg", "일치하는 회원 정보가 없습니다.");
+      return new ResponseEntity<Object>(map,HttpStatus.NOT_FOUND);
+    }
+    else{
+      map.put("status",true);
+      map.put("msg", "회원님의 아이디는"+data+"입니다.");
+      // map.put("loginUser", userRepo.findById(data.getUiSeq()));
+
+    }
+    return new ResponseEntity<Object>(map,HttpStatus.OK);
+
+    }
+    
+
+
+
+  }
+
+
+
+
+
+
+
+
   
 
-  // @GetMapping("/list")
-  // public ResponseEntity<Object> getUserList(HttpSession session) {
-  //   Map<String, Object> map = uService.getUserList(session);
-  //   return new ResponseEntity<>(map, (HttpStatus) map.get("code"));
-  // }
-
-
-
-@GetMapping("/loginlist")
-  public String getLoginList(HttpSession session, Pageable pageable, Model model){
-      UserInfoVO login = (UserInfoVO)session.getAttribute("loginUser");
-      if(login == null){ //로그인 데이터 없음
-        return "redirect:/login";
-      }
-    Page<UserInfoEntity>page =userRepo.findAll((pageable));
-
-    // List<AdminAccountEntity> list = adminAccountRepository.findAll();
-    List<UserInfoVO> accountList = new ArrayList<UserInfoVO>();
-    for(UserInfoEntity a : page.getContent()){
-      accountList.add(new UserInfoVO(a));
-    }
-    // http://localhost:9501/member/list?page=0&size=10&sort=aiSeq,desc
-    
-    model.addAttribute("accountList", accountList);
-    model.addAttribute("totalPage", page.getTotalPages());
-    model.addAttribute("totalCount", page.getTotalElements());
-    model.addAttribute("getMemberJoin()",page.getNumber());
-    return "/member/list";
-  }
-  @GetMapping("/status")
-  public String getMemberStatusUpdate(@RequestParam Long seq,
-  @RequestParam Integer status){
-    UserInfoEntity entity = userRepo.findByUiSeq(seq); //select하고
-    entity.setUiStatus(status); // ui_status 값을 바꾸고
-    userRepo.save(entity); // 저장하고
-    return "redirect:/member/loginlist";
-  }
-  @GetMapping ("/delete")
-  public String getMamberDelete(@RequestParam Long seq){
-    UserInfoEntity entity = userRepo.findByUiSeq(seq);
-    userRepo.delete(entity);
-    return "redirect:/member/loginlist";
-  }
-  @GetMapping("/findid")
-  public String dofindLoginId(HttpServletRequest request, HttpServletResponse response){
-    String name = request.getParameter("uiName");
-    String email = request.getParameter("uiEmail");
-      UserInfoEntity user = uService.getUserUiNameAndUiEmail(name, email);
-      if( user == null){
-        request.setAttribute("msg", "일치하는 회원이 존재하지 않습니다.");
-        return "/";
-      }
-      request.setAttribute("msg", name +"의 아이디는" + user.getUiId() + "입니다.");
-      return "redirect:/";
-  }
-  @GetMapping("/findpwd")
-  public String dofindLoginPwd(HttpServletRequest request, HttpServletResponse response){
-    String id = request.getParameter("id");
-    String name =request.getParameter("name");
-    UserInfoEntity user = uService.getUserByUiId(id);
-    if(user == null){
-      request.setAttribute("msg", "일치하는 회원이 없습니다.");
-      return "/";
-    }
-    else if(user.getUiEmail().equals(name) == false){
-      request.setAttribute("msg", "이메일 주소가 일치하지 않습니다.");
-      return "/";
-    }
-    request.setAttribute("msg", user.getUiName()+"의 비밀번호는"+user.getUiPwd()+"입니다.");
-    return "direct:/";
-  }
-}
 

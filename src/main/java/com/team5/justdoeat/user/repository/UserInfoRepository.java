@@ -9,9 +9,10 @@ import com.team5.justdoeat.user.entity.UserInfoEntity;
 @Repository
 public interface UserInfoRepository extends JpaRepository<UserInfoEntity,Long> {
   public List<UserInfoEntity> findAllByUiSeq(Long uiSeq);
- UserInfoEntity findByUiSeq(Long uiSeq);
- UserInfoEntity findByUiId(String uiId);
- public UserInfoEntity findByUiNameAndUiEmail(String name, String email);
- public Integer countByUiId(String uiId);
- public UserInfoEntity findByUiIdAndUiPwd(String uiid, String uipwd);
+UserInfoEntity findByUiSeq(Long uiSeq);
+UserInfoEntity findByUiId(String uiId);
+List<UserInfoEntity> findByUiNameAndUiEmail(String uiName, String uiEmail);
+public Integer countByUiId(String uiId);
+UserInfoEntity findByUiEmail(String uiEmail);
+public UserInfoEntity findByUiIdAndUiPwd(String uiId, String uiPwd);
 }
