@@ -22,4 +22,19 @@ public class UserInfoVO {
   
 
 
+<<<<<<< HEAD
+=======
+  public UserInfoVO(UserInfoEntity entity){
+    this.seq = entity.getUiSeq();
+    this.id = entity.getUiId();
+    this.pwd = entity.getUiPwd();
+    this.name = entity.getUiName();
+    this.email = entity.getUiEmail();
+    this.phone = entity.getUiPhone();
+    this.birth = entity.getUiBirth();
+    this.gen = entity.getUiGen();
+    this.grade = entity.getUiGrade();
+    this.status = entity.getUiStatus();
+  }
+>>>>>>> d67af3d95093c4ab446e69d5942e565e0e82b097
 }
