@@ -20,11 +20,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-<<<<<<< HEAD
 @Builder
 @DynamicInsert
-=======
->>>>>>> d67af3d95093c4ab446e69d5942e565e0e82b097
 @Table(name ="user_info")
 public class UserInfoEntity {
   @Id
