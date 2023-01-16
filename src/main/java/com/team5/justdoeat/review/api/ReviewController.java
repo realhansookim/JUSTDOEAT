@@ -39,19 +39,20 @@ public class ReviewController {
 
   // @Autowired 
   //@Nullable MultipartFile file, @Nullable List<MultipartFile> multipartFiles
-  @PostMapping("/add")
-  public Map<String,Object> addReview(HttpSession session ,@RequestPart ReviewInfoVO reviewInfoVO,
-   @RequestPart @Nullable MultipartFile file,@RequestPart  @Nullable List<MultipartFile> multipartFiles){
-    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+
+//   @PostMapping("/add")
+//   public Map<String,Object> addReview(HttpSession session ,@RequestPart ReviewInfoVO reviewInfoVO,
+//    @RequestPart @Nullable MultipartFile file,@RequestPart  @Nullable List<MultipartFile> multipartFiles){
+//     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
 
 
-    // ReviewInfoVO reviewInfoVO = new ReviewInfoVO(LocalDate.now(), "댓글내용테스트", 5.0, 5.0, 5.0, 5.0);
+//     // ReviewInfoVO reviewInfoVO = new ReviewInfoVO(LocalDate.now(), "댓글내용테스트", 5.0, 5.0, 5.0, 5.0);
     
     
-    resultMap = reviewService.addReviews(session, reviewInfoVO, file, multipartFiles);
-    // return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
-    return resultMap;
-  }
+//     resultMap = reviewService.addReviews(session, reviewInfoVO, file, multipartFiles);
+//     // return new ResponseEntity<Object>(resultMap, (HttpStatus)resultMap.get("code"));
+//     return resultMap;
+//   }
 
   @GetMapping("/store/review/list")
   public Map<String,Object> getlistReview(HttpSession session){
