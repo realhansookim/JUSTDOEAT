@@ -79,42 +79,42 @@ public class StoreController {
 
     // StoreInfoEntity, UserInfoEntity, StoreDetailEntity연결완료
     // 카테고리는 별도로 넣는방식이 안전함
-    @PutMapping("/add/all")
-    public String addAllStoreInfo(@RequestBody StoreVO data) {
-        StoreInfoEntity entity = StoreInfoEntity.builder()
-                .siName(data.getSiName())
-                .siMinDeliveryTime(data.getSiMinDeliveryTime())
-                .siMaxDeliveryTime(data.getSiMaxDeliveryTime())
-                .siMainImg(data.getSiMainImg())
-                .siStatus(data.getSiStatus())
-                .siOrderCnt(data.getSiOrderCnt())
-                .storeDetailList(
-                        StoreDetailEntity.builder()
-                                .sdAlarmContent(data.getSdAlarmContent())
-                                .sdAddress(data.getSdAddress())
-                                .sdAdditionalInfo(data.getSdAdditionalInfo())
-                                .sdOpenTime(data.getSdOpenTime())
-                                .sdCloseTime(data.getSdCloseTime())
-                                .sdPhone(data.getSdPhone())
-                                .sdMinPrice(data.getSdMinPrice())
-                                .sdPayment(data.getSdPayment())
-                                .sdBusinessNum(data.getSdBusinessNum())
-                                .sdBusinessName(data.getSdBusinessName())
-                                .sdOriginInfo(data.getSdOriginInfo())
-                                .build())
-                .userInfoList(
-                        UserInfoEntity.builder()
-                                .uiId(data.getUiId())
-                                .uiPwd(data.getUiPwd())
-                                .uiEmail(data.getUiEmail())
-                                .uiPhone(data.getSdPhone())
-                                .uiBirth(data.getUiBirth())
-                                .uiGen(data.getUiGen())
-                                .uiGrade(data.getUiGrade())
-                                .uiStatus(data.getSiStatus())
-                                .build())
-                .build();
-        siRepo.save(entity);
-        return "store_info/store_Detail/user_info_data_input_success";
-    }
+    // @PutMapping("/add/all")
+    // public String addAllStoreInfo(@RequestBody StoreVO data) {
+    //     StoreInfoEntity entity = StoreInfoEntity.builder()
+    //             .siName(data.getSiName())
+    //             .siMinDeliveryTime(data.getSiMinDeliveryTime())
+    //             .siMaxDeliveryTime(data.getSiMaxDeliveryTime())
+    //             .siMainImg(data.getSiMainImg())
+    //             .siStatus(data.getSiStatus())
+    //             .siOrderCnt(data.getSiOrderCnt())
+    //             .storeDetailList(
+    //                     StoreDetailEntity.builder()
+    //                             .sdAlarmContent(data.getSdAlarmContent())
+    //                             .sdAddress(data.getSdAddress())
+    //                             .sdAdditionalInfo(data.getSdAdditionalInfo())
+    //                             .sdOpenTime(data.getSdOpenTime())
+    //                             .sdCloseTime(data.getSdCloseTime())
+    //                             .sdPhone(data.getSdPhone())
+    //                             .sdMinPrice(data.getSdMinPrice())
+    //                             .sdPayment(data.getSdPayment())
+    //                             .sdBusinessNum(data.getSdBusinessNum())
+    //                             .sdBusinessName(data.getSdBusinessName())
+    //                             .sdOriginInfo(data.getSdOriginInfo())
+    //                             .build())
+    //             .userInfoList(
+    //                     UserInfoEntity.builder()
+    //                             .uiId(data.getUiId())
+    //                             .uiPwd(data.getUiPwd())
+    //                             .uiEmail(data.getUiEmail())
+    //                             .uiPhone(data.getSdPhone())
+    //                             .uiBirth(data.getUiBirth())
+    //                             .uiGen(data.getUiGen())
+    //                             .uiGrade(data.getUiGrade())
+    //                             .uiStatus(data.getSiStatus())
+    //                             .build())
+    //             .build();
+    //     siRepo.save(entity);
+    //     return "store_info/store_Detail/user_info_data_input_success";
+    // }
 }

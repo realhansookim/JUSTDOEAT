@@ -2,14 +2,14 @@ package com.team5.justdoeat.user.VO;
 
 import java.time.LocalDate;
 
-
+import com.team5.justdoeat.user.entity.UserInfoEntity;
 
 import lombok.Data;
 
 
 @Data
 public class UserInfoVO {
-  
+  private Long seq;
   private String id;
   private String pwd;
   private String name;
@@ -22,8 +22,6 @@ public class UserInfoVO {
   
 
 
-<<<<<<< HEAD
-=======
   public UserInfoVO(UserInfoEntity entity){
     this.seq = entity.getUiSeq();
     this.id = entity.getUiId();
@@ -36,5 +34,4 @@ public class UserInfoVO {
     this.grade = entity.getUiGrade();
     this.status = entity.getUiStatus();
   }
->>>>>>> d67af3d95093c4ab446e69d5942e565e0e82b097
 }

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team5.justdoeat.review.vo.LoginUserVO;
@@ -76,8 +77,7 @@ public class UserInfoAPIController {
   @PutMapping("/findid")
   public ResponseEntity<Object> userId(@RequestBody UserInfoEntity data){
     Map<String,Object> map = new LinkedHashMap<String,Object>();
-    List<UserInfoEntity> findUser = userRepo.findByUiNameAndUiEmail(data.getUiName(), data.getUiEmail());
-    System.out.println(findUser);
+    UserInfoEntity findUser = userRepo.findByUiNameAndUiEmail(data.getUiName(), data.getUiEmail());
     if(findUser == null){
       map.put("status", false);
       map.put("msg", "일치하는 회원 정보가 없습니다.");
@@ -85,13 +85,12 @@ public class UserInfoAPIController {
     }
     else{
       map.put("status",true);
-      map.put("msg", "회원님의 아이디는"+data+"입니다.");
+      map.put("msg", "회원님의 아이디"+findUser.getUiId()+"는입니다.");
       // map.put("loginUser", userRepo.findById(data.getUiSeq()));
 
     }
     return new ResponseEntity<Object>(map,HttpStatus.OK);
-
-    }
+  }
     
 
 

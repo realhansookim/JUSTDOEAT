@@ -11,7 +11,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity,Long> {
   public List<UserInfoEntity> findAllByUiSeq(Long uiSeq);
 UserInfoEntity findByUiSeq(Long uiSeq);
 UserInfoEntity findByUiId(String uiId);
-List<UserInfoEntity> findByUiNameAndUiEmail(String uiName, String uiEmail);
+public UserInfoEntity findByUiNameAndUiEmail(String uiName, String uiEmail);
 public Integer countByUiId(String uiId);
 UserInfoEntity findByUiEmail(String uiEmail);
 public UserInfoEntity findByUiIdAndUiPwd(String uiId, String uiPwd);
