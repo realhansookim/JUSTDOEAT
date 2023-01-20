@@ -6,7 +6,6 @@ import com.team5.justdoeat.user.entity.UserInfoEntity;
 
 import lombok.Data;
 
-
 @Data
 public class UserInfoVO {
   private Long seq;
@@ -20,8 +19,11 @@ public class UserInfoVO {
   private Integer grade; 
   private Integer status;
   
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6eeafbb22e07be5875e27be061f6a28cb501865f
   public UserInfoVO(UserInfoEntity entity){
     this.seq = entity.getUiSeq();
     this.id = entity.getUiId();

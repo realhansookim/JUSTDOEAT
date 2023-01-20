@@ -30,6 +30,11 @@ import com.team5.justdoeat.menu.repository.MenuCateConnectRepository;
 import com.team5.justdoeat.menu.repository.MenuImageInfoRepository;
 import com.team5.justdoeat.menu.repository.MenuInfoRepository;
 import com.team5.justdoeat.menu.repository.MenuOptionRepository;
+<<<<<<< HEAD
+=======
+import com.team5.justdoeat.store.repository.StoreInfoRepository;
+import com.team5.justdoeat.menu.service.MenuService;
+>>>>>>> 6eeafbb22e07be5875e27be061f6a28cb501865f
 
 import com.team5.justdoeat.menu.service.MenuService;
 import com.team5.justdoeat.store.repository.StoreInfoRepository;
