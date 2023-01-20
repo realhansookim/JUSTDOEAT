@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team5.justdoeat.review.vo.LoginUserVO;
@@ -30,6 +30,8 @@ import com.team5.justdoeat.user.VO.UserInfoVO;
 import com.team5.justdoeat.user.entity.UserInfoEntity;
 import com.team5.justdoeat.user.repository.UserInfoRepository;
 import com.team5.justdoeat.user.service.UserInfoService;
+
+import io.micrometer.common.lang.Nullable;
 
 
 
@@ -65,19 +67,34 @@ public class UserInfoAPIController {
     return new ResponseEntity<>(map, HttpStatus.CREATED);
 
   }
-  @GetMapping("/list")
+  // @GetMapping("/list")
   
-  public ResponseEntity<Object> getProductList(Pageable pageable) {
+  // public ResponseEntity<Object> getProductList(Pageable pageable) {
 
-    Map<String, Object> map = new LinkedHashMap<String, Object>();
-    map.put(("list"), userRepo.findAll(pageable));
-    return new ResponseEntity<>(map, HttpStatus.CREATED);
+  //   Map<String, Object> map = new LinkedHashMap<String, Object>();
+  //   map.put(("list"), userRepo.findAll(pageable));
+  //   return new ResponseEntity<>(map, HttpStatus.CREATED);
+  // }
+@GetMapping("list")
+public Map<String,Object> getUserList(Pageable pageable, @RequestParam @Nullable String keyword, @RequestParam @Nullable Integer page){
+  Map<String,Object> map = new LinkedHashMap<String,Object>();
+
+  if(keyword == null){
+    keyword = "";
   }
-
+  if(page == null){
+    page = 1;
+  }
+  map.put("list", userRepo.findAll(pageable));
+  map.put("currentPage",page);
+  map.put("totalCount",userRepo.count());
+return map;
+}
   @PutMapping("/findid")
   public ResponseEntity<Object> userId(@RequestBody UserInfoEntity data){
     Map<String,Object> map = new LinkedHashMap<String,Object>();
-    UserInfoEntity findUser = userRepo.findByUiNameAndUiEmail(data.getUiName(), data.getUiEmail());
+   UserInfoEntity findUser = userRepo.findByUiNameAndUiEmail(data.getUiName(), data.getUiEmail());
+    System.out.println(findUser);
     if(findUser == null){
       map.put("status", false);
       map.put("msg", "일치하는 회원 정보가 없습니다.");
@@ -85,17 +102,34 @@ public class UserInfoAPIController {
     }
     else{
       map.put("status",true);
-      map.put("msg", "회원님의 아이디"+findUser.getUiId()+"는입니다.");
+      map.put("msg", "회원님의 아이디는"+data+"입니다.");
       // map.put("loginUser", userRepo.findById(data.getUiSeq()));
 
     }
     return new ResponseEntity<Object>(map,HttpStatus.OK);
-  }
+
+    }
+    @PutMapping("/findpw")
+    public ResponseEntity<Object> userPw(@RequestBody UserInfoEntity data){
+      Map<String,Object> map = new LinkedHashMap<String,Object>();
+      UserInfoEntity findUser = userRepo.findByUiIdAndUiNameAndUiEmail(data.getUiId(),data.getUiName(), data.getUiEmail());
+      System.out.println(findUser);
+      if(findUser == null){
+        map.put("status", false);
+        map.put("msg", "일치하는 회원 정보가 없습니다.");
+        return new ResponseEntity<Object>(map,HttpStatus.NOT_FOUND);
+      }
+      else{
+        map.put("status",true);
+        map.put("msg", "회원님의 비밀번호는"+ findUser.getUiPwd() +"입니다.");
+      }
+      return new ResponseEntity<Object>(map,HttpStatus.OK);
     
 
 
 
   }
+}
 
 
 

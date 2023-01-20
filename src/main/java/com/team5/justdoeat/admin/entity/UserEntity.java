@@ -1,4 +1,4 @@
-package com.team5.justdoeat.user.entity;
+package com.team5.justdoeat.admin.entity;
 
 import java.time.LocalDate;
 
@@ -19,13 +19,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Entity
 @Builder
 @DynamicInsert
+@Entity
 @Table(name ="user_info")
-public class UserInfoEntity {
+public class UserEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  
   @Column(name ="ui_seq") private Long uiSeq;
   @Column(name ="ui_id") private String uiId;
   @Column(name ="ui_pwd") private String uiPwd;
