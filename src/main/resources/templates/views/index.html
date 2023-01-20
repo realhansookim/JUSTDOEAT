@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOME</title>
+</head>
+<body>
+  <h1>관리자페이지HOME</h1>
+  <div>
+    <form action="user/login" method="post">
+      <p>아이디</p>
+      <input type="text" name="ui_id" id="ui_id">
+      <p>비밀번호</p>
+      <input type="password" name="ui_pwd" id="ui_pwd"> <br>
+      <button id="user_login"> 로그인</button>
+      <a href="/user/add">회원가입</a>
+      <p th:text="${msg}"></p>
+    </form>
+  </div>
+</body>
+</html>

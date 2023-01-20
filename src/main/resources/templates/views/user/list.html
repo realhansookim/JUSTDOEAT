@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>회원리스트</title>
+</head>
+<body>
+  <table>
+  <h1>List</h1>
+  <style>
+    h1{text-align: center;}
+    th{background-color: antiquewhite; padding: 10px;}
+    td{text-align: center; border-bottom: 1px; background-color: wheat;padding: 10px;}
+    table{border-collapse: collapse; width: 1000px; margin: 10px auto; background-color: aquamarine;}
+    .serch_area, .pager_area {text-align: center;}
+    .box{display: inline-block; border-radius:5px; display: inline-block;
+    padding: 7fz 12px;
+  color: blueviolet;}
+  .normal{background-color: chocolate;}
+  .banned{background-color: cornflowerblue;}
+  .exit{background-color: cadetblue;}
+  .member{background-color: darkgoldenrod;}
+  .sajang{background-color: cyan;}
+  .master{background-color: darkgreen;}
+  </style>
+  <thead>
+    <th>번호</th>
+    <th>아이디</th>
+    <th>관리자명</th>
+    <th>관리자상태</th>
+    <th>등급</th>
+    <th>상태변경</th>
+    <th>삭제</th>
+  </thead>
+    <tbody>
+      <tr th:each="user : ${result.list}">
+        <td th:text="${user.uiSeq}"></td>
+        <td>
+          <a th:text="${user.uiId}" th:href="@{/user/detail(uiSeq=${user.uiSeq})}"></a>
+        </td>
+        <td th:text="${user.uiName}"></td>
+        <td>
+          <th:block th:if="${user.uiStatus == 1}"><span class="box normal">정상이용자</span></th:block>
+          <th:block th:if="${user.uiStatus == 2}"><span class="box banned">정지이용자</span></th:block>
+          <th:block th:if="${user.uiStatus == 3}"><span class="box exit">탈퇴이용자</span></th:block>
+        </td>
+        <td>
+          <th:block th:if="${user.uiGrade == 0}"><span class=box member>일반이용자</span></th:block>
+          <th:block th:if="${user.uiGrade == 1}"><span class=box sajang>사장</span></th:block>
+          <th:block th:if="${user.uiGrade == 99}"><span class=box master>마스터관리자</span></th:block>
+        </td>
+        <td>
+          <a th:href="@{/user/update/status?value=1(uiSeq=${user.uiSeq},page=${result.currentPage},keyword=${keyword})}">정상사용으로 변경</a>
+          <a th:href="@{/user/update/status?value=2(uiSeq=${user.uiSeq},page=${result.currentPage},keyword=${keyword})}">이용 정지로 변경</a>
+          <a th:href="@{/user/update/status?value=3(uiSeq=${user.uiSeq},page=${result.currentPage},keyword=${keyword})}">탈퇴로 변경</a>
+        </td>
+        <td>
+          <a th:href="@{/user/delete(uiSeq=${user.uiSeq},page=${result.currentPage},keyword=${keyword})}">계정삭제</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="pager_area">
+    <form action="/user/list" method="get" id="search_form">
+      <input type="text" name="keyword" placeholder="아이디검색"><button>검색</button>
+    </form>
+    <th:block th:each="i : ${#numbers.sequence(0,result.totalPage-1)}">
+      <th:block th:if="${result.totalPage>0}">
+        <th:block th:if="${keyword == null ||keyword == ''}">
+        <a th:href="@{/user/list(page=${i})}" th:text="${i+1}"></a>
+      </th:block>
+      <th:block th:if="${keyword != null && keyword != ''}">
+      <a th:href="@{/user/list(page=${i},keyword=${keyword})}" th:text="${i+1}"></a>
+    </th:block>
+  </th:block>
+</th:block>
+  </div>
+  
+</body>
+</html>

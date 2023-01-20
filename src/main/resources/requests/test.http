@@ -1,0 +1,30 @@
+POST http://localhost:9988/member/login HTTP/1.1
+content-type: application/json
+
+{
+  "id" : "admin1",
+  "pwd" :"1234"
+}
+###############################
+GET http://localhost:9988/member/list HTTP/1.1
+content-type: application/json
+############################################
+PUT http://localhost:9988/member/findid HTTP/1.1
+content-type: application/json
+
+{
+  "uiEmail" : "admin001@naver.com",
+  "uiName"  : "관리자1"
+}
+###########################################
+PUT http://localhost:9988/member/findpw HTTP/1.1
+content-type: application/json
+
+{
+  "id" : "admin001",
+  "name"  : "관리자001"
+}
+
+
+
+

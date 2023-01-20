@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>메인</title>
+  <script th:inline="javascript">
+    const user =[[${session.loginUser}]]
+    if(user==null){
+      alert("관리자 전용입니다.")
+      location.href="/"
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <nav id="gng">
+      <div id="user_area">
+        <div th:if="${session.loginUser != null}">
+          <span id="login_user">
+            <b>
+              <span th:text="${session.loginUser.ui_name}"></span>
+              (<a href="user/detail" th:text="${session.loginUser.ui_id}"></a>)
+            </b>
+            님
+          </span>
+          <a href="/user/logout">로그아웃</a>
+        </div>
+      </div>
+      <div id="menu">
+        <!-- <th:block th:if="{session.loginUser.ui_grade == 99}"> -->
+          <a href="/user/list">회원 계정 리스트</a>
+        </th:block>
+      </div>
+    </nav>
+  </header>
+</body>
+</html>
