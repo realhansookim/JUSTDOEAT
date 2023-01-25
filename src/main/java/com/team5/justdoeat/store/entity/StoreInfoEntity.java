@@ -42,6 +42,7 @@ public class StoreInfoEntity {
     @Column(name = "si_main_img")           private String siMainImg;
     @Column(name = "si_status")             private Integer siStatus;
     @Column(name = "si_order_cnt")          private Integer siOrderCnt;
+
     @Column(name = "si_ui_seq")             private Integer siUiSeq;
     // @Column(name = "si_sd_seq")             private Long siSdSeq;
     @OneToMany(mappedBy = "miSiSeq") List<MenuInfoEntity> menuInfo = new ArrayList<>();

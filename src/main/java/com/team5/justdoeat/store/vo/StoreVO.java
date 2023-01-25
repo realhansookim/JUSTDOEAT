@@ -38,6 +38,7 @@ public class StoreVO {
     // UserInfoEntity
     private String uiId;
     private String uiPwd;
+    private String uiName;
     private String uiEmail;
     private String uiPhone;
     private LocalDate uiBirth;
