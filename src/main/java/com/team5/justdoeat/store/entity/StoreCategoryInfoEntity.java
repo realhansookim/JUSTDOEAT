@@ -2,8 +2,6 @@ package com.team5.justdoeat.store.entity;
 
 import org.hibernate.annotations.DynamicInsert;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +20,7 @@ import lombok.NoArgsConstructor;
 @DynamicInsert
 public class StoreCategoryInfoEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "sci_seq") @JsonIgnore private Long sciSeq;
+  @Column(name = "sci_seq") private Long sciSeq;
   @Column(name = "sci_name") private String sciName;
   @Column(name = "sci_img") private String sciImg;
 }

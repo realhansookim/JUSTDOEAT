@@ -17,10 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.team5.justdoeat.review.entity.ReviewImgEntity;
 import com.team5.justdoeat.review.entity.ReviewInfoEntity;
-import com.team5.justdoeat.review.entity.ReviewScorePointEntity;
 import com.team5.justdoeat.review.repository.ReviewImgRepository;
 import com.team5.justdoeat.review.repository.ReviewInfoRepository;
-import com.team5.justdoeat.review.repository.ReviewScorePointRepository;
 import com.team5.justdoeat.review.vo.LoginUserVO;
 import com.team5.justdoeat.review.vo.ReviewInfoVO;
 import com.team5.justdoeat.store.repository.StoreInfoRepository;
@@ -31,9 +29,6 @@ import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ReviewService {
-
-    @Autowired
-    ReviewScorePointRepository rScoreInfoRepo;
     @Autowired
     ReviewInfoRepository rInfoRepo;
     @Autowired

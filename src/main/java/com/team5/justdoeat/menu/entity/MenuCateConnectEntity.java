@@ -29,7 +29,7 @@ public class MenuCateConnectEntity {
     // @OneToMany(mappedBy = "mcaSeq") List<MenuCategoryEntity> category = new ArrayList<>();
     @ManyToOne @JoinColumn(name = "mcc_mca_seq") MenuCategoryEntity menuCategory;
     // @Column(name = "mcc_mca_seq") private Long mccMcaSeq;
-    // @ManyToOne @JoinColumn(name = "mcc_mi_seq") MenuInfoEntity menuInfo;
-    @Column(name = "mcc_mi_seq") @JsonIgnore private Long mccMiSeq;
+    @ManyToOne @JoinColumn(name = "mcc_mi_seq") MenuInfoEntity menuInfo;
+    // @Column(name = "mcc_mi_seq") @JsonIgnore private Long mccMiSeq;
     // @OneToMany(mappedBy = "miSeq") List<MenuInfoEntity> menu = new ArrayList<>();
 }
