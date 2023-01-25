@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -29,7 +30,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "menu_info")
 @Builder
 public class MenuInfoEntity {
-  @OneToMany(mappedBy = "mccMiSeq") List<MenuCateConnectEntity> category = new ArrayList<>();
+  @ManyToMany(mappedBy = "mccMiSeq") List<MenuCateConnectEntity> category = new ArrayList<>();
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "mi_seq") @JsonIgnore private Long miSeq;
   @Column(name = "mi_name") private String miName;

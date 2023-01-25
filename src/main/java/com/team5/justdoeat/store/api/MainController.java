@@ -14,5 +14,4 @@
 //     public String getMain() {
 //         return "/store/main";
 //     }
-    
 // }
