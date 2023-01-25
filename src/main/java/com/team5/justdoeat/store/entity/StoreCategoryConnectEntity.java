@@ -23,9 +23,10 @@ import lombok.NoArgsConstructor;
 public class StoreCategoryConnectEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "sc_seq") private Long scSeq;
+  
   @Column(name = "sc_si_seq") private Long scSiSeq;
-  // @ManyToOne @JoinColumn(name = "sc_si_seq") StoreInfoEntity storeInfo;
   @Column(name = "sc_ci_seq") private Long scCiSeq;
+  // @ManyToOne @JoinColumn(name = "sc_si_seq") StoreInfoEntity storeInfo;
   // @ManyToOne @JoinColumn(name = "sc_ci_seq") StoreCategoryInfoEntity categoryInfo;
   
 }

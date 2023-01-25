@@ -1,9 +1,5 @@
 package com.team5.justdoeat.store.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.team5.justdoeat.menu.entity.MenuInfoEntity;
 import com.team5.justdoeat.user.entity.UserInfoEntity;
 
 import jakarta.persistence.CascadeType;
@@ -36,6 +32,7 @@ public class StoreInfoEntity {
     @Column(name = "si_main_img")           private String siMainImg;
     @Column(name = "si_status")             private Integer siStatus;
     @Column(name = "si_order_cnt")          private Integer siOrderCnt;
+
     @Column(name = "si_ui_seq")             private Integer siUiSeq;
     @Column(name = "si_sd_seq")             private Long siSdSeq;
 

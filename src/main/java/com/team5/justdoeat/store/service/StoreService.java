@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.team5.justdoeat.store.entity.StoreCategoryConnectEntity;
 import com.team5.justdoeat.store.entity.StoreCategoryInfoEntity;
 import com.team5.justdoeat.store.entity.StoreDetailEntity;
 import com.team5.justdoeat.store.entity.StoreInfoEntity;
@@ -19,7 +20,7 @@ import com.team5.justdoeat.store.repository.StoreInfoRepository;
 
 @Service
 public class StoreService {
-    @Autowired StoreCategoryConnectRepository storeCateRepo;
+    @Autowired StoreCategoryConnectRepository storeCateConRepo;
     @Autowired StoreCategoryInfoRepository storeCateInfoRepo;
     @Autowired StoreDetailRepository sDetailRepo;
     // @Autowired StoreImageRepository sImgRepo;
@@ -84,6 +85,17 @@ public class StoreService {
         return map;
     }
 
+    // 가게 카테고리 검색할때 정보 표시 기능
+    public Map<String, Object> getStoreCateList(Pageable pageable) {
+        Page<StoreCategoryInfoEntity> page = storeCateInfoRepo.getStoreCateList(pageable);
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap.put("totalPage", page.getTotalPages());
+        resultMap.put("currentPage", page.getNumber() + 1);
+        resultMap.put("totalCount", page.getTotalElements());
+        resultMap.put("list", page.getContent());
+        return resultMap;
+    }
+
     // 가게 검색 기능
     // Test1
     public Map<String, Object> getStoreList(Pageable pageable, String keyword) {
@@ -98,5 +110,16 @@ public class StoreService {
         resultMap.put("totalCount", page.getTotalElements());
         resultMap.put("list", page.getContent());
         return resultMap;
+    }
+
+
+    // 가게 카테고리 연결 추가할때 메시지 표시 기능
+    public Map<String, Object> addStoreCategoryConnect(StoreCategoryConnectEntity data) {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        storeCateConRepo.save(data);
+        map.put("status", true);
+        map.put("message", "가게 카테고리가 연결 되었습니다.");
+        map.put("code", HttpStatus.CREATED);
+        return map;
     }
 }

@@ -22,6 +22,7 @@ public class DiscountInfoEntity {
     @Column(name = "di_seq") private Long diSeq;
     @Column(name = "di_min_price") private Integer diMinPrice;
     @Column(name = "di_discount") private Double diDiscount;
+    
     @Column(name = "di_si_seq") private Long diSiSeq;
     // @OneToOne @JoinColumn(name = "di_si_seq") StoreInfoEntity storeInfo; 
 }
