@@ -24,11 +24,6 @@ public class DiscountInfoEntity {
     @Column(name = "di_seq") @JsonIgnore private Long diSeq;
     @Column(name = "di_min_price") private Integer diMinPrice;
     @Column(name = "di_discount") private Double diDiscount;
-<<<<<<< HEAD
     @Column(name = "di_si_seq") @JsonIgnore private Long diSiSeq;
-=======
-    
-    @Column(name = "di_si_seq") private Long diSiSeq;
->>>>>>> kdh
     // @OneToOne @JoinColumn(name = "di_si_seq") StoreInfoEntity storeInfo; 
 }

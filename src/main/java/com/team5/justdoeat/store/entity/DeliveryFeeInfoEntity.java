@@ -25,11 +25,6 @@ public class DeliveryFeeInfoEntity {
     @Column(name = "dfi_min_fee") private Integer dfiMinFee;
     @Column(name = "dfi_max_fee") private Integer dfiMaxFee;
     @Column(name = "dfi_delivery_fee") private Integer dfiDeliveryFee;
-<<<<<<< HEAD
     @Column(name = "dfi_si_seq") @JsonIgnore private Long dfiSiSeq;
-=======
-    
-    @Column(name = "dfi_si_seq") private Long dfiSiSeq;
->>>>>>> kdh
     // @ManyToOne @JoinColumn(name = "dfi_si_seq") StoreInfoEntity storeInfo;
 }
