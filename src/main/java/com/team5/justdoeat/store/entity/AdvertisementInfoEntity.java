@@ -21,6 +21,6 @@ public class AdvertisementInfoEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ad_seq") private Long adSeq;
     @Column(name = "ad_status") private Integer adStatus;
-    @Column(name = "ad_si_seq") private Long adSiSeq;
-    // @OneToOne @JoinColumn(name = "ad_si_seq") StoreInfoEntity storeInfo;
+    // @Column(name = "ad_si_seq") private Long adSiSeq;
+    @OneToOne @JoinColumn(name = "ad_si_seq") StoreInfoEntity storeInfo;
 }

@@ -28,6 +28,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MenuCategoryEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "mca_seq") @JsonIgnore private Long mcaSeq;
-  @Column(name = "mca_name")private  String mcaName;
+  @Column(name = "mca_seq") private Long mcaSeq;
+  @Column(name = "mca_name") private  String mcaName;
 }

@@ -36,17 +36,19 @@ public class ReviewInfoEntity {
   @Column(name = "ri_reg_dt") private LocalDate riRegDt;
   @Column(name = "ri_content") private String riContent;
   @Column(name = "ri_order_number") private String riOrderNumber;
-  @Column(name = "ri_si_seq") private Long riSiSeq;
-  // @ManyToOne @JoinColumn(name = "ri_si_seq" ) StoreInfoEntity storeInfo;
-  @OneToOne(cascade = CascadeType.ALL) @JoinColumn(name = "ri_rsp_seq") ReviewScorePointEntity reviewScorePoint;
+  // @Column(name = "ri_si_seq") private Long riSiSeq;
+  @Column(name = "ri_all_score") private Double rspAllScore;
+  @Column(name = "ri_taste_score") private Double rspTasteScore;
+  @Column(name = "ri_quantity_score") private Double rspQuantityScore;
+  @Column(name = "ri_delivery_score") private Double rspDeliveryScore;
+  @ManyToOne @JoinColumn(name = "ri_si_seq" ) StoreInfoEntity storeInfo;
   @ManyToOne @JoinColumn(name = "ri_ui_seq") UserInfoEntity userInfo;
 
-  public ReviewInfoEntity(LocalDate riRegDt,String riContent,String riOrderNumber,StoreInfoEntity storeInfo,ReviewScorePointEntity reviewScorePoint, UserInfoEntity userInfo){
+  public ReviewInfoEntity(LocalDate riRegDt,String riContent,String riOrderNumber,StoreInfoEntity storeInfo, UserInfoEntity userInfo){
     this.riRegDt = riRegDt;
     this.riContent = riContent;
     this.riOrderNumber = riOrderNumber;
     // this.storeInfo = storeInfo;
-    this.reviewScorePoint = reviewScorePoint;
     this.userInfo = userInfo;
   }
 }
