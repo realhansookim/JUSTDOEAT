@@ -1,5 +1,6 @@
 package com.team5.justdoeat.store.api;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import com.team5.justdoeat.store.repository.StoreDetailRepository;
 import com.team5.justdoeat.store.repository.StoreInfoRepository;
 
 import com.team5.justdoeat.store.service.StoreService;
+import com.team5.justdoeat.store.vo.StoreVO;
+import com.team5.justdoeat.user.entity.UserInfoEntity;
 
 import io.micrometer.common.lang.Nullable;
 
@@ -116,8 +119,6 @@ public class StoreController {
     // 에러나도 정상적으로 돌아가긴함 - 찜찜하면은 주석처리하기
 
 
-/* 
-
     // 모든 데이터 보여주기
     @GetMapping("/list")
     public ResponseEntity<Object> listStore(StoreInfoEntity data) {
@@ -169,7 +170,5 @@ public class StoreController {
         siRepo.save(entity);
         return "store_info/store_Detail/user_info_data_input_success";
     }
-
- */
 
 }
