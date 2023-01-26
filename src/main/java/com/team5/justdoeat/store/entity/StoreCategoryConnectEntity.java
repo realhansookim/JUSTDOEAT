@@ -25,8 +25,8 @@ public class StoreCategoryConnectEntity {
   @Column(name = "sc_seq") private Long scSeq;
   
   // @Column(name = "sc_si_seq") private Long scSiSeq;
-  // @Column(name = "sc_ci_seq") private Long scCiSeq;
+  @Column(name = "sc_ci_seq") private Long scCiSeq;
   @ManyToOne @JoinColumn(name = "sc_si_seq") StoreInfoEntity storeInfo;
-  @ManyToOne @JoinColumn(name = "sc_ci_seq") StoreCategoryInfoEntity categoryInfo;
+  // @ManyToOne @JoinColumn(name = "sc_ci_seq") StoreCategoryInfoEntity categoryInfo;
   
 }

@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -85,6 +86,63 @@ public class StoreController {
             @RequestParam @Nullable String keyword) {
         return new ResponseEntity<>(sService.getStoreList(pageable, keyword), HttpStatus.OK);
     }
+
+    @Autowired StoreCategoryConnectRepository rrepo;
+    @GetMapping("/test")
+    public Map<String, Object> getCate(@RequestParam @Nullable String cate) {
+    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    if(cate == null) {
+        resultMap.put("list", rrepo.findAll());
+    }
+    else if(cate.equals("일식/돈까스")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(1L));
+    }
+    else if(cate.equals("치킨")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(2L));
+    }
+    else if(cate.equals("족발/보쌈")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(3L));
+    }
+    else if(cate.equals("중국집")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(4L));
+    }
+    else if(cate.equals("한식")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(5L));
+    }
+    else if(cate.equals("피자/양식")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(6L));
+    }
+    else if(cate.equals("카페/디저트")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(7L));
+    }
+    else if(cate.equals("분식")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(8L));
+    }
+    else if(cate.equals("야식")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(9L));
+    }
+    else if(cate.equals("편의점/마트")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(10L));
+    }
+    else if(cate.equals("프랜차이즈")) {
+        resultMap.put("keyword", cate);
+        resultMap.put("list", rrepo.findByScCiSeq(11L));
+    }
+    else {
+        resultMap.put("message", "카테고리를 다시 확인해주세요.");
+    }
+    return resultMap;
+}
 
     /////////////////////////////////////////////////////////////////////////////////////////
 

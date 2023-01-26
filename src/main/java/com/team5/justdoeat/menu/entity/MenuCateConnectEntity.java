@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "menu_cate_connect")
 public class MenuCateConnectEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mcc_seq") @JsonIgnore private Long mccSeq;
+    @Column(name = "mcc_seq") private Long mccSeq;
     // @OneToMany(mappedBy = "mcaSeq") List<MenuCategoryEntity> category = new ArrayList<>();
     @ManyToOne @JoinColumn(name = "mcc_mca_seq") MenuCategoryEntity menuCategory;
     // @Column(name = "mcc_mca_seq") private Long mccMcaSeq;
