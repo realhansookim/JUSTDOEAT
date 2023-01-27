@@ -1,25 +1,41 @@
 package com.team5.justdoeat.store.api;
 
+import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.team5.justdoeat.store.entity.StoreCategoryConnectEntity;
 import com.team5.justdoeat.store.entity.StoreCategoryInfoEntity;
 import com.team5.justdoeat.store.entity.StoreDetailEntity;
+import com.team5.justdoeat.store.entity.StoreImageEntity;
 import com.team5.justdoeat.store.entity.StoreInfoEntity;
+import com.team5.justdoeat.store.repository.DetailListRepository;
 import com.team5.justdoeat.store.repository.StoreCategoryConnectRepository;
 import com.team5.justdoeat.store.repository.StoreCategoryInfoRepository;
 import com.team5.justdoeat.store.repository.StoreDetailRepository;
@@ -30,6 +46,7 @@ import com.team5.justdoeat.store.vo.StoreVO;
 import com.team5.justdoeat.user.entity.UserInfoEntity;
 
 import io.micrometer.common.lang.Nullable;
+import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/store")
@@ -40,6 +57,7 @@ public class StoreController {
     @Autowired StoreDetailRepository sdRepo;
     @Autowired StoreCategoryInfoRepository sciRepo;
     @Autowired StoreCategoryConnectRepository sccRepo;
+    @Value("${file.image.store}") String store_img;
 
     // 가게 기본정보만 추가
     // http://localhost:9988/store/add/info
@@ -66,10 +84,10 @@ public class StoreController {
 
     // 가게 상세정보만 검색
     // http://localhost:9988/store/detail?page=
-    @GetMapping("/detail")
-    public ResponseEntity<Object> getDetailList(@PageableDefault(size = 10) Pageable pageable) {
-        return new ResponseEntity<>(sService.getStoreDetailList(pageable), HttpStatus.OK);
-    }
+    // @GetMapping("/detail")
+    // public ResponseEntity<Object> getDetailList(@PageableDefault(size = 10) Pageable pageable) {
+    //     return new ResponseEntity<>(sService.getStoreDetailList(pageable), HttpStatus.OK);
+    // }
     // 가게 카테고리 추가
     // http://localhost:9988/store/add/cate
     @PutMapping("/add/cate")
@@ -104,7 +122,7 @@ public class StoreController {
     }
 
     @Autowired StoreCategoryConnectRepository rrepo;
-    @GetMapping("/test")
+    @GetMapping("/list")
     public Map<String, Object> getCate(@RequestParam @Nullable String cate) {
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
     if(cate == null) {
@@ -160,6 +178,16 @@ public class StoreController {
     return resultMap;
 }
 
+@Autowired DetailListRepository dRepo;
+@GetMapping("/detail")
+public Map<String, Object> getOptionList(@RequestParam Long storeNo) {
+    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    resultMap.put("list", dRepo.findBySiSeq(storeNo));
+    return resultMap;
+}
+
+
+
     /////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -168,12 +196,12 @@ public class StoreController {
 
 
     // 모든 데이터 보여주기
-    @GetMapping("/list")
-    public ResponseEntity<Object> listStore(StoreInfoEntity data) {
-        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        resultMap = sService.listStore(data);
-        return new ResponseEntity<>(resultMap, (HttpStatus) resultMap.get("code"));
-    }
+    // @GetMapping("/list")
+    // public ResponseEntity<Object> listStore(StoreInfoEntity data) {
+    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    //     resultMap = sService.listStore(data);
+    //     return new ResponseEntity<>(resultMap, (HttpStatus) resultMap.get("code"));
+    // }
 
     // StoreInfoEntity, UserInfoEntity, StoreDetailEntity연결완료
     // 카테고리는 별도로 넣는방식이 안전함
@@ -219,4 +247,61 @@ public class StoreController {
     //     return "store_info/store_Detail/user_info_data_input_success";
     // }
 
+    @PutMapping("/upload")
+    public ResponseEntity<Object> putImage(@RequestPart MultipartFile file) {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        Path folderLocation = Paths.get(store_img);
+        String originFileName = file.getOriginalFilename();
+        String[] split = originFileName.split("\\.");
+        String ext = split[split.length - 1];
+        String filename = "";
+        for (int i = 0; i < split.length - 1; i++) {
+            filename += split[i];
+        }
+        String saveFilename = "store" + "_";
+        Calendar c = Calendar.getInstance();
+        saveFilename += c.getTimeInMillis() + "." + ext;
+        Path targerFile = folderLocation.resolve(saveFilename);
+        try {
+            Files.copy(file.getInputStream(), targerFile, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        StoreImageEntity data = new StoreImageEntity();
+        data.setSimgFileName(saveFilename);
+        data.setSimgUri(filename);
+        sService.addStoreImage(data);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @GetMapping("/image/{simgUri}")
+    public ResponseEntity<Resource> getImage(@PathVariable String simgUri, HttpServletRequest request)
+            throws Exception {
+        Path folderLocation = Paths.get(store_img);
+        String filename = sService.getIiFileNameByUri(simgUri);
+        String[] split = filename.split("\\.");
+        String ext = split[split.length - 1];
+        String exportName = simgUri + "." + ext;
+        Path targetFile = folderLocation.resolve(filename);
+        Resource r = null;
+        try {
+            r = new UrlResource(targetFile.toUri());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(r.getFile().getAbsolutePath());
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename*=\"" + URLEncoder.encode(exportName, "UTF-8") + "\"")
+                .body(r);
+    }
 }

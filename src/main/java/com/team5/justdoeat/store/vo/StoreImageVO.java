@@ -13,7 +13,7 @@ public class StoreImageVO {
 
   public StoreImageVO(StoreImageEntity data){
     this.no = data.getSimgSeq();
-    this.url = data.getSimgUrl();
-    this.order = data.getSimgOrder();
+    this.url = data.getSimgUri();
+    // this.order = data.getSimgOrder();
   }
 }

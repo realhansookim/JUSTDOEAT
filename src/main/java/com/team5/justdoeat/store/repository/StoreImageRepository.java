@@ -13,5 +13,6 @@ public interface StoreImageRepository extends JpaRepository<StoreImageEntity,Lon
     List<StoreImageEntity> findBySimgSeq(Long simgBiSeq);
 
     // List<StoreImageEntity> findTop1BySimgUriOrderBySimgSeqDesc(String uri);
+    public List<StoreImageEntity> findBySimgUri(String simgUri);
   
 }

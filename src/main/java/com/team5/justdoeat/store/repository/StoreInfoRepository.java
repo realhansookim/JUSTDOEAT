@@ -16,5 +16,5 @@ public interface StoreInfoRepository extends JpaRepository<StoreInfoEntity, Long
 
     @Query(value = "select a from StoreInfoEntity a where a.siName like %:keyword%")
     Page<StoreInfoEntity> findBySiName(Pageable pageable, @Param("keyword") String keyword);
-    
+
 }

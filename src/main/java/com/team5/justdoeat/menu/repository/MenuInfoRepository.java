@@ -14,4 +14,6 @@ public interface MenuInfoRepository extends JpaRepository <MenuInfoEntity, Long>
   public MenuInfoEntity findByMiName(String miName);
   @Query(value = "select * from menu_info where mi_name like %:keyword%", nativeQuery=true)
     List<MenuInfoEntity> searchMenu(@Param("keyword") String keyword);
+  public List<MenuInfoEntity> findByMiSiSeq(Long MiSiSeq);
+  
 }

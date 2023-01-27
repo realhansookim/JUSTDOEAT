@@ -29,7 +29,7 @@ public class MenuOptionEntity {
   @Column(name = "mo_seq") private Long moSeq;
   @Column(name = "mo_name") private String moName;
   @Column(name = "mo_price") private Integer moPrice;
-  // @Column(name = "mo_mi_seq") @JsonIgnore private Long moMiSeq;
-  @ManyToOne @JoinColumn(name = "mo_mi_seq") MenuInfoEntity menuInfo;
+  @Column(name = "mo_mi_seq") @JsonIgnore private Long moMiSeq;
+  // @ManyToOne @JoinColumn(name = "mo_mi_seq") MenuInfoEntity menuInfo;
 
 }

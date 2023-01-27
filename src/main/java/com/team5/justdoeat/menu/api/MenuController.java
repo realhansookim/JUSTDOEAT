@@ -90,7 +90,6 @@ public class MenuController {
   @PutMapping("/upload")
   public ResponseEntity<Object> putImage(@RequestPart MultipartFile file) {
     Map<String, Object> map = new LinkedHashMap<String, Object>();
-    System.out.println(file.getOriginalFilename());
     Path folderLocation = Paths.get(menu_img);
     String originFileName = file.getOriginalFilename();
     String[] split = originFileName.split("\\.");
@@ -146,21 +145,36 @@ public class MenuController {
     }
 
     // 조회시 옵션정보 연결하여 같이 표시
-    @GetMapping("/list")
-    public Map<String, Object> getMenuList(@RequestParam @Nullable String keyword) {
-      Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-      if(keyword == null) keyword = "";
-      List<MenuInfoEntity> list = mRepo.searchMenu(keyword);
-      resultMap.put("keyword", keyword);
-      resultMap.put("totalCount", list.size());
-      resultMap.put("list", list);
-      return resultMap;
+  //   @GetMapping("/list")
+  //   public Map<String, Object> getMenuList(@RequestParam @Nullable String keyword) {
+  //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+  //     if(keyword == null) keyword = "";
+  //     List<MenuInfoEntity> list = mRepo.searchMenu(keyword);
+  //     resultMap.put("keyword", keyword);
+  //     resultMap.put("totalCount", list.size());
+  //     resultMap.put("list", list);
+  //     return resultMap;
+  // }
+
+  // @GetMapping("/option")
+  //   public Map<String, Object> getCate() {
+  //   Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+  //   resultMap.put("list", cateConnectRepo.findAll());
+  //   return resultMap;
+  // }
+
+  @GetMapping("/list")
+  public Map<String, Object> getMenuList(@RequestParam Long storeNo) {
+    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    resultMap.put("list", mRepo.findByMiSiSeq(storeNo));
+    return resultMap;
   }
 
   @GetMapping("/option")
-    public Map<String, Object> getCate() {
+  public Map<String, Object> getOptionList(@RequestParam Long menuNo) {
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    resultMap.put("list", cateConnectRepo.findAll());
+    resultMap.put("list", optionRepo.findByMoMiSeq(menuNo));
     return resultMap;
   }
+  
 }

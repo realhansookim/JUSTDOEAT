@@ -1,6 +1,7 @@
 package com.team5.justdoeat.store.service;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Service;
 import com.team5.justdoeat.store.entity.StoreCategoryConnectEntity;
 import com.team5.justdoeat.store.entity.StoreCategoryInfoEntity;
 import com.team5.justdoeat.store.entity.StoreDetailEntity;
+import com.team5.justdoeat.store.entity.StoreImageEntity;
 import com.team5.justdoeat.store.entity.StoreInfoEntity;
 import com.team5.justdoeat.store.repository.StoreCategoryConnectRepository;
 import com.team5.justdoeat.store.repository.StoreCategoryInfoRepository;
 import com.team5.justdoeat.store.repository.StoreDetailRepository;
+import com.team5.justdoeat.store.repository.StoreImageRepository;
 import com.team5.justdoeat.store.repository.StoreInfoRepository;
 
 @Service
@@ -122,4 +125,16 @@ public class StoreService {
         map.put("code", HttpStatus.CREATED);
         return map;
     }
+
+    @Autowired StoreImageRepository imageRepo;
+    public Map<String, Object> addStoreImage(StoreImageEntity data) {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        imageRepo.save(data);
+        return map;
+    }
+
+    public String getIiFileNameByUri (String simgUri) {
+        List<StoreImageEntity> data = imageRepo.findBySimgUri(simgUri);
+        return data.get(0).getSimgFileName();
+      }
 }
