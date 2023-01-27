@@ -30,12 +30,14 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team5.justdoeat.store.entity.StoreAlarmImageEntity;
 import com.team5.justdoeat.store.entity.StoreCategoryConnectEntity;
 import com.team5.justdoeat.store.entity.StoreCategoryInfoEntity;
 import com.team5.justdoeat.store.entity.StoreDetailEntity;
 import com.team5.justdoeat.store.entity.StoreImageEntity;
 import com.team5.justdoeat.store.entity.StoreInfoEntity;
 import com.team5.justdoeat.store.repository.DetailListRepository;
+import com.team5.justdoeat.store.repository.StoreAlarmImageRepository;
 import com.team5.justdoeat.store.repository.StoreCategoryConnectRepository;
 import com.team5.justdoeat.store.repository.StoreCategoryInfoRepository;
 import com.team5.justdoeat.store.repository.StoreDetailRepository;
@@ -58,6 +60,8 @@ public class StoreController {
     @Autowired StoreCategoryInfoRepository sciRepo;
     @Autowired StoreCategoryConnectRepository sccRepo;
     @Value("${file.image.store}") String store_img;
+    @Value("${file.image.alarm}") String alarm_img;
+    @Autowired StoreAlarmImageRepository alarmRepo;
 
     // 가게 기본정보만 추가
     // http://localhost:9988/store/add/info
@@ -304,4 +308,75 @@ public Map<String, Object> getOptionList(@RequestParam Long storeNo) {
                         "attachment; filename*=\"" + URLEncoder.encode(exportName, "UTF-8") + "\"")
                 .body(r);
     }
+
+    @Autowired StoreCategoryInfoRepository categoryRepo;
+    @GetMapping("/category")
+    public Map<String, Object> getCategory() {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        resultMap.put("list", categoryRepo.findAll());
+        return resultMap;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////// 알람 업로드
+
+    @PutMapping("/uploadAlarm")
+    public ResponseEntity<Object> putAlarmImage(@RequestPart MultipartFile file, Long storeNo, Integer order) {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        Path folderLocation = Paths.get(alarm_img);
+        String originFileName = file.getOriginalFilename();
+        String[] split = originFileName.split("\\.");
+        String ext = split[split.length - 1];
+        String filename = "";
+        for (int i = 0; i < split.length - 1; i++) {
+            filename += split[i];
+        }
+        String saveFilename = "alarm" + "_";
+        Calendar c = Calendar.getInstance();
+        saveFilename += c.getTimeInMillis() + "." + ext;
+        Path targerFile = folderLocation.resolve(saveFilename);
+        try {
+            Files.copy(file.getInputStream(), targerFile, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        StoreAlarmImageEntity data = new StoreAlarmImageEntity();
+        data.setSaiFileName(saveFilename);
+        data.setSaiUri(filename);
+        data.setSaiSdiSeq(storeNo);
+        data.setSaiOrder(order);
+        sService.addAlarmImage(data);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @GetMapping("/imageAlarm/{saiUri}")
+    public ResponseEntity<Resource> getAlarmImage(@PathVariable String saiUri, HttpServletRequest request)
+            throws Exception {
+        Path folderLocation = Paths.get(alarm_img);
+        String filename = sService.getIiFileNameByUri1(saiUri);
+        String[] split = filename.split("\\.");
+        String ext = split[split.length - 1];
+        String exportName = saiUri + "." + ext;
+        Path targetFile = folderLocation.resolve(filename);
+        Resource r = null;
+        try {
+            r = new UrlResource(targetFile.toUri());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String contentType = null;
+        try {
+            contentType = request.getServletContext().getMimeType(r.getFile().getAbsolutePath());
+            if (contentType == null) {
+                contentType = "application/octet-stream";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename*=\"" + URLEncoder.encode(exportName, "UTF-8") + "\"")
+                .body(r);
+    }
+
 }

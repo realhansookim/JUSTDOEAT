@@ -22,6 +22,8 @@ public class DetailListEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "si_seq") private Long siSeq;
   @Column(name = "sd_seq") private Long sdSeq;
+  @Column(name = "sai_uri") private String saiUri;
+  @Column(name = "sai_order") private Integer saiOrder;
   @Column(name = "sd_alarm_content") private String sdAlarmContent;
   @Column(name = "sd_address") private String sdAddress;
   @Column(name = "sd_additional_info") private Integer sdAdditionalInfo;
@@ -33,4 +35,5 @@ public class DetailListEntity {
   @Column(name = "sd_business_num") private String sdBusinessNum;
   @Column(name = "sd_business_name") private String sdBusinessName;
   @Column(name = "sd_origin_info") private String sdOriginInfo;
+
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team5.justdoeat.review.repository.ReviewInfoRepository;
 import com.team5.justdoeat.review.service.ReviewService;
 import com.team5.justdoeat.review.vo.ReviewInfoVO;
 
@@ -79,4 +80,11 @@ public class ReviewController {
 //       return new ResponseEntity<>(resultMap,(HttpStatus)resultMap.get("code"));
 //    }
 
+@Autowired ReviewInfoRepository rInfoRepo;
+@GetMapping("/list")
+    public Map<String, Object> getOptionList(@RequestParam Long storeNo) {
+    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    resultMap.put("list", rInfoRepo.findByRiSiSeq(storeNo));
+    return resultMap;
+    }
 }

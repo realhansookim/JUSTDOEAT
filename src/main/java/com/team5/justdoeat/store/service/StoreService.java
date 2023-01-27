@@ -10,11 +10,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.team5.justdoeat.store.entity.StoreAlarmImageEntity;
 import com.team5.justdoeat.store.entity.StoreCategoryConnectEntity;
 import com.team5.justdoeat.store.entity.StoreCategoryInfoEntity;
 import com.team5.justdoeat.store.entity.StoreDetailEntity;
 import com.team5.justdoeat.store.entity.StoreImageEntity;
 import com.team5.justdoeat.store.entity.StoreInfoEntity;
+import com.team5.justdoeat.store.repository.StoreAlarmImageRepository;
 import com.team5.justdoeat.store.repository.StoreCategoryConnectRepository;
 import com.team5.justdoeat.store.repository.StoreCategoryInfoRepository;
 import com.team5.justdoeat.store.repository.StoreDetailRepository;
@@ -136,5 +138,19 @@ public class StoreService {
     public String getIiFileNameByUri (String simgUri) {
         List<StoreImageEntity> data = imageRepo.findBySimgUri(simgUri);
         return data.get(0).getSimgFileName();
-      }
+    }
+
+    ////////////////////////////////////// 알람 이미지
+    
+    @Autowired StoreAlarmImageRepository alarmRepo;
+    public Map<String, Object> addAlarmImage(StoreAlarmImageEntity data) {
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        alarmRepo.save(data);
+        return map;
+    }
+
+    public String getIiFileNameByUri1 (String saiUri) {
+        List<StoreAlarmImageEntity> data = alarmRepo.findBySaiUri(saiUri);
+        return data.get(0).getSaiFileName();
+    }
 }
