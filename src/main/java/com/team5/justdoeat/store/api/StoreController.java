@@ -344,6 +344,7 @@ public Map<String, Object> getOptionList(@RequestParam Long storeNo) {
         data.setSaiUri(filename);
         data.setSaiSdiSeq(storeNo);
         data.setSaiOrder(order);
+        data.setSaiUrl("http://192.168.0.156:9988/store/imageAlarm/"+filename);
         sService.addAlarmImage(data);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }

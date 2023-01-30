@@ -1,5 +1,8 @@
 package com.team5.justdoeat.store.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.Immutable;
 
 import jakarta.persistence.Column;
@@ -7,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +27,7 @@ public class DetailListEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "si_seq") private Long siSeq;
   @Column(name = "sd_seq") private Long sdSeq;
-  @Column(name = "sai_uri") private String saiUri;
-  @Column(name = "sai_order") private Integer saiOrder;
+  @ManyToMany(mappedBy = "saiSdiSeq") List<StoreAlarmImageEntity> ImageInfo = new ArrayList<>();
   @Column(name = "sd_alarm_content") private String sdAlarmContent;
   @Column(name = "sd_address") private String sdAddress;
   @Column(name = "sd_additional_info") private Integer sdAdditionalInfo;
