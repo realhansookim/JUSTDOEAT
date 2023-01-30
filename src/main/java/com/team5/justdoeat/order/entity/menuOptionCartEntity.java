@@ -27,5 +27,5 @@ public class menuOptionCartEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name="moc_seq")       private Long mocSeq;
   @Column(name="moc_mc_seq")       private Long mocMcSeq;
-  @Column(name="moc_mi_seq")       private Long mcMiSeq;
+  @Column(name="moc_mo_seq")       private Long mcMiSeq;
 }
