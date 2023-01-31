@@ -3,6 +3,9 @@ package com.team5.justdoeat.review.service;
 import java.io.*;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -37,30 +40,39 @@ public class ReviewService {
     UserInfoRepository userRepo;
     @Autowired
     StoreInfoRepository sInfoRepo;
+    @Autowired
+    ReviewImgRepository imgRepo;
+    // @Autowired
+    // OrderInfoRepository orderRepo;
 
-    // public Map<String, Object> addReviews(HttpSession session, ReviewInfoVO data, MultipartFile file,
-    //         List<MultipartFile> files) {
-    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    //     LoginUserVO user = (LoginUserVO) session.getAttribute("loginUser");
-    //     if (data == null && session.getAttribute("loginUser") == null) {
-    //         resultMap.put("code", HttpStatus.NOT_FOUND);
-    //         resultMap.put("msg", "빈값이거나 로그인정보를 찾을수 없습니다");
-    //         return resultMap;
-    //     }
-    //     ReviewScorePointEntity reviewScore = new ReviewScorePointEntity(data.getAllScore(), data.getTasteScore(),
-    //             data.getQuantityScore(), data.getDeliveryScore());
-    //     reviewScore = rScoreInfoRepo.save(reviewScore);
-    //     ReviewInfoEntity reviewInfo = new ReviewInfoEntity(data.getRegDt(), data.getContent(), user.getStoreOrder(),
-    //             sInfoRepo.findBySiSeq(user.getStoreSeq()), reviewScore, userRepo.findByUiSeq(user.getUserSeq()));
-    //     reviewInfo = rInfoRepo.save(reviewInfo);
-    //     resultMap = addReviewImage(file, files, reviewInfo);
-    //     return resultMap;
-    // }
+    public Map<String, Object> addReviews( ReviewInfoVO data,  MultipartFile file,
+            List<MultipartFile> files) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        if (data == null && userRepo.findByUiSeq(data.getUiSeq()) == null) {
+            resultMap.put("code", HttpStatus.NOT_FOUND);
+            resultMap.put("msg", "빈값이거나 로그인정보를 찾을수 없습니다");
+            return resultMap;
+        }
+        System.out.println(data);
+        ReviewInfoEntity reviewInfo = ReviewInfoEntity.builder()
+                                        .riSeq(null)
+                                        .riRegDt(data.getRegDt())
+                                        .riContent(data.getContent())
+                                        .riSiSeq(data.getStoreSeq())
+                                        .rspAllScore(data.getAllScore())
+                                        .rspTasteScore(data.getTasteScore())
+                                        .rspQuantityScore(data.getQuantityScore())
+                                        .rspDeliveryScore(data.getDeliveryScore())
+                                        .riUiSeq(data.getUiSeq()).build();
+        reviewInfo = rInfoRepo.save(reviewInfo);
+        resultMap = addReviewImage(file, files, reviewInfo);
+        return resultMap;
+    }
 
     public Map<String, Object> addReviewImage(MultipartFile file, List<MultipartFile> files,
             ReviewInfoEntity reviewInfo) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-        System.out.println(files);
+        // System.out.println(files);
         if (file == null && files == null) {
             resultMap.put("status", false);
             resultMap.put("code", HttpStatus.FORBIDDEN);
@@ -89,23 +101,49 @@ public class ReviewService {
     private String fileDir;
 
     public void addFileImage(MultipartFile file, ReviewInfoEntity reviewInfo, Integer imgOrder) {
+        Path folderLocation = Paths.get(fileDir);
         String origName = file.getOriginalFilename();// 원래파일이름
-        String savedPath = fileDir + origName;
-        try {
-            file.transferTo(new File(savedPath));
-            System.out.println("이미지저장");
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            ReviewImgEntity imagefile = new ReviewImgEntity().builder()
-                    .rimgFilename(origName)
-                    .rimgOrder(imgOrder)
-                    .reviewInfo(reviewInfo).build();
+        // String savedPath = fileDir + origName;
+        String reviewFileName = createStoreFileName(origName);
+        // try {
+        //     file.transferTo(new File(fileDir + reviewFileName));
+
+        // } catch (IllegalStateException e) {
+        //     e.printStackTrace();
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // } finally {
+            Path targerFile = folderLocation.resolve(reviewFileName);
+            try {
+                Files.copy(file.getInputStream(), targerFile, StandardCopyOption.REPLACE_EXISTING);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // reviewFileName = createStoreFileName(origName);
+            // System.out.println(reviewFileName);
+            ReviewImgEntity imagefile = ReviewImgEntity.builder()
+            .rimgFilename(origName)
+            .rimgOrder(imgOrder)
+            .reviewInfo(reviewInfo)
+            .rimgUri("http://192.168.0.156:9988/review/image/"+reviewFileName)
+            .rimgSavename(reviewFileName).build();
             rImgRepo.save(imagefile);
-        }
+        // }
     }
+
+    // UUID를 이용해 파일 이름을 생성한다. 단, 어떤 파일인지 알기 위해 확장자는 남겨둔다.
+    private String createStoreFileName(String originalFilename) {
+        String ext = extractExt(originalFilename);
+        String uuid = UUID.randomUUID().toString();
+        return uuid + "." + ext;
+    }
+
+    // 확장자를 꺼낸다.
+    private String extractExt(String originalFilename) {
+        int pos = originalFilename.lastIndexOf(".");
+        return originalFilename.substring(pos + 1);
+    }
+
 
     public void addFilesImage(List<MultipartFile> files, ReviewInfoEntity reviewInfo) {
 
@@ -114,32 +152,38 @@ public class ReviewService {
         }
     }
 
-    public Map<String, Object> deleteReview(HttpSession session, Long reviewSeq) {
-        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    // public Map<String, Object> deleteReview(HttpSession session, Long reviewSeq) {
+    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
 
-        LoginUserVO user = (LoginUserVO) session.getAttribute("loginUser");
+    //     LoginUserVO user = (LoginUserVO) session.getAttribute("loginUser");
 
-        UserInfoEntity userEntity = userRepo.findByUiSeq(user.getUserSeq());
-        if (rInfoRepo.countByRiSeqAndUserInfo(reviewSeq, userEntity) == 0) {
-            resultMap.put("status", false);
-            resultMap.put("code", HttpStatus.FORBIDDEN);
-            resultMap.put("msg", "자신이 작성한 주문이 아닙니다.");
-            System.out.println(reviewSeq);
-            System.out.println(userEntity.toString());
-            return resultMap;
-        } else {
-            rInfoRepo.deleteById(reviewSeq);
-            resultMap.put("status", true);
-            resultMap.put("code", HttpStatus.FORBIDDEN);
-            resultMap.put("msg", "삭제되었습니다.");
-        }
-        return resultMap;
-    }
+    //     UserInfoEntity userEntity = userRepo.findByUiSeq(user.getUserSeq());
+    //     if (rInfoRepo.countByRiSeqAndUserInfo(reviewSeq, userEntity) == 0) {
+    //         resultMap.put("status", false);
+    //         resultMap.put("code", HttpStatus.FORBIDDEN);
+    //         resultMap.put("msg", "자신이 작성한 주문이 아닙니다.");
+    //         System.out.println(reviewSeq);
+    //         System.out.println(userEntity.toString());
+    //         return resultMap;
+    //     } else {
+    //         rInfoRepo.deleteById(reviewSeq);
+    //         resultMap.put("status", true);
+    //         resultMap.put("code", HttpStatus.FORBIDDEN);
+    //         resultMap.put("msg", "삭제되었습니다.");
+    //     }
+    //     return resultMap;
+    // }
 
     public Map<String, Object> listReview(HttpSession session) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
 
         return resultMap;
+    }
+
+    public String getIiFileNameByUri(String rimgUri) {
+        ReviewImgEntity data = imgRepo.findByRimgUri(rimgUri);
+
+        return data.getRimgFilename();
     }
 
 }
