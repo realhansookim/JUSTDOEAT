@@ -21,6 +21,8 @@ public class ReviewInfoVO {
     private Double tasteScore;
     private Double quantityScore;
     private Double deliveryScore;
+    private Long uiSeq;
+    private Long storeSeq;
     // public ReviewInfoVO(LocalDate riRegDt,String riContent,Double rspAllScore){
     // }
 }

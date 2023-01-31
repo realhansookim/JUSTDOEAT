@@ -23,18 +23,14 @@ import lombok.NoArgsConstructor;
 @Table(name = "review_img")
 @Entity
 @DynamicInsert
+@Builder
 public class ReviewImgEntity {
   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "rimg_seq") private Long rimgSeq;
   @Column(name = "rimg_filename") private String rimgFilename;
   @Column(name = "rimg_order") private Integer rimgOrder;
+  @Column(name = "rimg_uri") private String rimgUri;
+  @Column(name = "rimg_savename") private String rimgSavename;
   // @Column(name = "rimg_ri_seq") private Long rimgRiSeq;
   @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "rimg_ri_seq") ReviewInfoEntity reviewInfo;
-
-  @Builder
-  public ReviewImgEntity(String rimgFilename, Integer rimgOrder, ReviewInfoEntity reviewInfo){
-    this.rimgFilename = rimgFilename;
-    this.rimgOrder = rimgOrder;
-    this.reviewInfo = reviewInfo;
-  }
 }

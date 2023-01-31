@@ -13,9 +13,9 @@ import com.team5.justdoeat.user.entity.UserInfoEntity;
 
 @Repository
 public interface ReviewInfoRepository extends JpaRepository <ReviewInfoEntity, Long> {
-  public ReviewInfoEntity findByRiOrderNumber(String riOrderNumber);
+  // public ReviewInfoEntity findByRiOrderNumber(String riOrderNumber);
 
-  public Integer countByRiSeqAndUserInfo(Long riSeq, UserInfoEntity useInfo);
+  // public Integer countByRiSeqAndUserInfo(Long riSeq, UserInfoEntity useInfo);
 
   public List<ReviewInfoEntity> findByRiSiSeq(Long riSiSeq);
 }
