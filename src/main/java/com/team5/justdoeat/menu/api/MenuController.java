@@ -16,6 +16,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -26,13 +27,14 @@ import com.team5.justdoeat.menu.entity.MenuCateConnectEntity;
 import com.team5.justdoeat.menu.entity.MenuImageInfoEntity;
 import com.team5.justdoeat.menu.entity.MenuInfoEntity;
 import com.team5.justdoeat.menu.entity.MenuOptionEntity;
+import com.team5.justdoeat.menu.entity.MenuSearchEntity;
 import com.team5.justdoeat.menu.repository.MenuCateConnectRepository;
 import com.team5.justdoeat.menu.repository.MenuImageInfoRepository;
 import com.team5.justdoeat.menu.repository.MenuInfoRepository;
 import com.team5.justdoeat.menu.repository.MenuOptionRepository;
+import com.team5.justdoeat.menu.repository.MenuSearchRepository;
 import com.team5.justdoeat.store.repository.StoreInfoRepository;
 import com.team5.justdoeat.menu.service.MenuService;
-
 import com.team5.justdoeat.menu.service.MenuService;
 import com.team5.justdoeat.store.repository.StoreInfoRepository;
 
@@ -144,17 +146,18 @@ public class MenuController {
           .body(r);
     }
 
-    // 조회시 옵션정보 연결하여 같이 표시
-  //   @GetMapping("/list")
-  //   public Map<String, Object> getMenuList(@RequestParam @Nullable String keyword) {
-  //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-  //     if(keyword == null) keyword = "";
-  //     List<MenuInfoEntity> list = mRepo.searchMenu(keyword);
-  //     resultMap.put("keyword", keyword);
-  //     resultMap.put("totalCount", list.size());
-  //     resultMap.put("list", list);
-  //     return resultMap;
-  // }
+
+    @Autowired MenuSearchRepository searchRepo;
+    @GetMapping("/search")
+    public Map<String, Object> getMenuList(@RequestParam @Nullable String keyword) {
+      Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+      if(keyword == null) keyword = "";
+      List<MenuSearchEntity> storeList = searchRepo.searchStoreAndMenu(keyword);
+      resultMap.put("keyword", keyword);
+      resultMap.put("totalCount", storeList.size());
+      resultMap.put("storeList", storeList);
+      return resultMap;
+  }
 
   // @GetMapping("/option")
   //   public Map<String, Object> getCate() {

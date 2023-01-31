@@ -93,7 +93,7 @@ return map;
   @PutMapping("/findid")
   public ResponseEntity<Object> userId(@RequestBody UserInfoEntity data){
     Map<String,Object> map = new LinkedHashMap<String,Object>();
-   UserInfoEntity findUser = userRepo.findByUiNameAndUiEmail(data.getUiName(), data.getUiEmail());
+    UserInfoEntity findUser = userRepo.findByUiNameAndUiEmail(data.getUiName(), data.getUiEmail());
     System.out.println(findUser);
     if(findUser == null){
       map.put("status", false);
@@ -102,7 +102,7 @@ return map;
     }
     else{
       map.put("status",true);
-      map.put("msg", "회원님의 아이디는"+data+"입니다.");
+      map.put("msg", "회원님의 아이디는 "+findUser.getUiId()+" 입니다.");
       // map.put("loginUser", userRepo.findById(data.getUiSeq()));
 
     }

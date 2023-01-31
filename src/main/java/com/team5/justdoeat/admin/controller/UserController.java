@@ -42,7 +42,7 @@ public class UserController {
   Map<String,Object> map = uService.loginUser(login);
     if((boolean)map.get("status")){
       session.setAttribute("loginUser", map.get("login"));
-      return "redirect:/main";
+      return "/main";
     }
     else{
       model.addAttribute("msg", map.get("msg"));
