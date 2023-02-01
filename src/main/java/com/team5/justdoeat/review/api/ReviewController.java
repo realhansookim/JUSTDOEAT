@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -50,13 +52,13 @@ public class ReviewController {
   // @Autowired 
   //@Nullable MultipartFile file, @Nullable List<MultipartFile> multipartFiles
 
-  @PostMapping("/add")
-  public Map<String,Object> addReview(@RequestPart ReviewInfoVO reviewInfoVO,
-   @RequestPart @Nullable MultipartFile file,@RequestPart  @Nullable List<MultipartFile> multipartFiles){
-    Map<String, Object> resultMap = new LinkedHashMap<String, Object>(); 
-    resultMap = reviewService.addReviews( reviewInfoVO, file, multipartFiles);
-    return resultMap;
-  }
+  // @PostMapping("/add")
+  // public Map<String,Object> addReview(@RequestPart ReviewInfoVO reviewInfoVO,
+  //  @RequestPart @Nullable MultipartFile file,@RequestPart  @Nullable List<MultipartFile> multipartFiles){
+  //   Map<String, Object> resultMap = new LinkedHashMap<String, Object>(); 
+  //   resultMap = reviewService.addReviews( reviewInfoVO, file, multipartFiles);
+  //   return resultMap;
+  // }
 
   @GetMapping("/store/review/list")
   public Map<String,Object> getlistReview(HttpSession session){
@@ -118,10 +120,9 @@ public class ReviewController {
 
 @Autowired ReviewInfoRepository rInfoRepo;
 @GetMapping("/list")
-    public Map<String, Object> getOptionList(@RequestParam Long storeNo) {
-    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    resultMap.put("list", rInfoRepo.findByRiSiSeq(storeNo));
-    return resultMap;
+    public ResponseEntity<Object> getOptionList(@RequestParam Long storeNo) {
+    return new ResponseEntity<>(reviewService.getReviewList(storeNo), HttpStatus.OK);
+
     }
 
   }
