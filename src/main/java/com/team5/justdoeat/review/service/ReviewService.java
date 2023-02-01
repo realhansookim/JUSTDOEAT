@@ -83,6 +83,34 @@ public class ReviewService {
     //     return resultMap;
     // }
 
+        public Map<String, Object> addReviews( ReviewInfoVO data,  MultipartFile file,
+            List<MultipartFile> files) {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+        if (data == null) {
+            resultMap.put("status", false);
+            resultMap.put("code", HttpStatus.NOT_FOUND);
+            resultMap.put("msg", "빈값이거나 로그인정보를 찾을수 없습니다");
+            return resultMap;
+        }
+        // OrderInfoEntity orderEntity = orderRepo.findByOrName(data.getOrderSeq());
+        System.out.println(data);
+        System.out.println("=================================");
+        ReviewInfoEntity reviewInfo = ReviewInfoEntity.builder()
+                                        .riSeq(null)
+                                        .riRegDt(data.getRegDt())
+                                        .riContent(data.getContent())
+                                        .rspAllScore(data.getAllScore())
+                                        .rspTasteScore(data.getTasteScore())
+                                        .rspQuantityScore(data.getQuantityScore())
+                                        .rspDeliveryScore(data.getDeliveryScore())
+                                        .riSiSeq(data.getUiSeq())
+                                        .riUiSeq(data.getSiSeq()).build();
+        System.out.println(reviewInfo);
+        reviewInfo = rInfoRepo.save(reviewInfo);
+        resultMap = addReviewImage(file, files, reviewInfo);
+        return resultMap;
+    }
+
     public Map<String, Object> addReviewImage(MultipartFile file, List<MultipartFile> files,
             ReviewInfoEntity reviewInfo) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
@@ -211,6 +239,12 @@ public class ReviewService {
         resultMap.put("list", list);
         resultMap.put("status",true);
         resultMap.put("message","댓글이 출력되었습니다");
+        return resultMap;
+    }
+
+    public Map<String, Object> deleteReview() {
+        Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+
         return resultMap;
     }
 

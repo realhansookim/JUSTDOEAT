@@ -52,13 +52,14 @@ public class ReviewController {
   // @Autowired 
   //@Nullable MultipartFile file, @Nullable List<MultipartFile> multipartFiles
 
-  // @PostMapping("/add")
-  // public Map<String,Object> addReview(@RequestPart ReviewInfoVO reviewInfoVO,
-  //  @RequestPart @Nullable MultipartFile file,@RequestPart  @Nullable List<MultipartFile> multipartFiles){
-  //   Map<String, Object> resultMap = new LinkedHashMap<String, Object>(); 
-  //   resultMap = reviewService.addReviews( reviewInfoVO, file, multipartFiles);
-  //   return resultMap;
-  // }
+  @PostMapping("/add")
+  public Map<String,Object> addReview(@RequestPart ReviewInfoVO reviewInfoVO,
+   @RequestPart @Nullable MultipartFile file,@RequestPart  @Nullable List<MultipartFile> multipartFiles){
+    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    System.out.println(reviewInfoVO);
+    resultMap = reviewService.addReviews( reviewInfoVO, file, multipartFiles);
+    return resultMap;
+  }
 
   @GetMapping("/store/review/list")
   public Map<String,Object> getlistReview(HttpSession session){
@@ -118,11 +119,15 @@ public class ReviewController {
 //       return new ResponseEntity<>(resultMap,(HttpStatus)resultMap.get("code"));
 //    }
 
-@Autowired ReviewInfoRepository rInfoRepo;
 @GetMapping("/list")
-    public ResponseEntity<Object> getOptionList(@RequestParam Long storeNo) {
+    public ResponseEntity<Object> getReviewList(@RequestParam Long storeNo) {
     return new ResponseEntity<>(reviewService.getReviewList(storeNo), HttpStatus.OK);
 
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Object> deleteReview(){
+    return new ResponseEntity<>(reviewService.deleteReview(), HttpStatus.OK);
+
+    }
   }
