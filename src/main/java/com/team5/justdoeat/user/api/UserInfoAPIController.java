@@ -55,7 +55,6 @@ public class UserInfoAPIController {
     Map<String, Object> map = new LinkedHashMap<String, Object>();
 
     UserInfoEntity loginUser = userRepo.findByUiIdAndUiPwd(data.getId(), data.getPwd());
-    System.out.println(loginUser);
     if (loginUser == null) {
       map.put("status", false);
       map.put("msg", "아이디 또는 비밀번호를 확인해주세요");
@@ -63,7 +62,6 @@ public class UserInfoAPIController {
     }
     map.put("status", true);
     map.put("msg", "로그인되었습니다.");
-    map.put("user", loginUser);
     return new ResponseEntity<>(map, HttpStatus.CREATED);
 
   }
@@ -124,11 +122,52 @@ return map;
         map.put("msg", "회원님의 비밀번호는"+ findUser.getUiPwd() +"입니다.");
       }
       return new ResponseEntity<Object>(map,HttpStatus.OK);
+    }
     
+  @PutMapping("/idCheck")
+    public ResponseEntity<Object> idcheck(@RequestBody UserInfoEntity data){
+      Map<String,Object> map = new LinkedHashMap<String,Object>();
+      UserInfoEntity findUser = userRepo.findByUiId(data.getUiId());
+      if(findUser != null) {
+        map.put("status", false);
+        map.put("msg", "이미 가입된 아이디입니다.");
+      }
+      else {
+        map.put("status", true);
+        map.put("msg", "가입 가능한 아이디입니다.");
+      }
+      return new ResponseEntity<Object>(map,HttpStatus.OK); 
+    }
 
+    @PutMapping("/emailCheck")
+    public ResponseEntity<Object> emailCheck(@RequestBody UserInfoEntity data){
+      Map<String,Object> map = new LinkedHashMap<String,Object>();
+      UserInfoEntity findUser = userRepo.findByUiEmail(data.getUiEmail());
+      if(findUser != null) {
+        map.put("status", false);
+        map.put("msg", "이미 가입된 이메일입니다.");
+      }
+      else {
+        map.put("status", true);
+        map.put("msg", "가입 가능한 이메일입니다.");
+      }
+      return new ResponseEntity<Object>(map,HttpStatus.OK); 
+    }
 
-
-  }
+    @PutMapping("/phoneCheck")
+    public ResponseEntity<Object> phoneCheck(@RequestBody UserInfoEntity data){
+      Map<String,Object> map = new LinkedHashMap<String,Object>();
+      UserInfoEntity findUser = userRepo.findByUiPhone(data.getUiPhone());
+      if(findUser != null) {
+        map.put("status", false);
+        map.put("msg", "이미 가입된 번호입니다.");
+      }
+      else {
+        map.put("status", true);
+        map.put("msg", "가입 가능한 번호입니다.");
+      }
+      return new ResponseEntity<Object>(map,HttpStatus.OK); 
+    }
 }
 
 

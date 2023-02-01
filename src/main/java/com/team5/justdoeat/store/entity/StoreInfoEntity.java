@@ -34,6 +34,7 @@ public class StoreInfoEntity {
     @Column(name = "si_min_delivery_time")  private String siMinDeliveryTime;
     @Column(name = "si_max_delivery_time")  private String siMaxDeliveryTime;
     @Column(name = "si_main_img")           private String siMainImg;
+    @Column(name = "si_min_price")          private Integer siMinPrice;
     @Column(name = "si_status")             private Integer siStatus;
     @Column(name = "si_order_cnt")          private Integer siOrderCnt;
     
