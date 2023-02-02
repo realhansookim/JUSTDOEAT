@@ -35,12 +35,13 @@ public class orderService {
   public Map<String, Object> addOrderInfo(OrderInfoVO data) {
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
     if (data == null){
+      System.out.println(data);
       resultMap.put("status",false);
       resultMap.put("message","주문이 실패하였습니다");
       return resultMap;
     }
     else{
-
+      System.out.println(data);
       OrderInfoEntity orderEntity = OrderInfoEntity.builder().
                                       oiSeq(null).
                                       oiRequest(data.getRequest()).
@@ -60,7 +61,7 @@ public class orderService {
     addMenuCart(orderEntity, data.getMenuList());
     }
     resultMap.put("status",true);
-    resultMap.put("message","댓글이 출력되었습니다");
+    resultMap.put("message","결제 완료되었습니다");
     return resultMap;
   }
 
@@ -70,7 +71,7 @@ public class orderService {
     MenuInfoVO menuInfoVO;
     for(int i = 0; i < menuList.size(); i++){
       menuInfoVO = menuList.get(i);
-      MenuCartEntity menuCart = MenuCartEntity.builder().mcSeq(null).mcMenuCnt(menuInfoVO.getMenuCount()).mcOiSeq(orderEntity.getOiSeq()).mcMiSeq(menuInfoVO.getMenuSeq()).build();
+      MenuCartEntity menuCart = MenuCartEntity.builder().mcSeq(null).mcMenuCnt(menuInfoVO.getMenuCnt()).mcOiSeq(orderEntity.getOiSeq()).mcMiSeq(menuInfoVO.getMenuSeq()).build();
       menuCart = menuCartRepo.save(menuCart);
       for(int j = 0; j < menuInfoVO.getOptionList().size(); j++){
         MenuOptionCartEntity menuOptionCart =  MenuOptionCartEntity.builder().mocSeq(null).mocMcSeq(menuCart.getMcSeq()).mocMoSeq(menuInfoVO.getOptionList().get(j).getOptionSeq()).build();
