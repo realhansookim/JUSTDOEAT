@@ -24,8 +24,8 @@ import lombok.NoArgsConstructor;
 public class MenuCartEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="mc_seq")       private Long meSeq;
-  @Column(name="mc_menu_cnt")       private Long mcMenuCnt;
+  @Column(name="mc_seq")       private Long mcSeq;
+  @Column(name="mc_menu_cnt")       private Integer mcMenuCnt;
   @Column(name="mc_oi_seq")       private Long mcOiSeq;
   @Column(name="mc_mi_seq")       private Long mcMiSeq;
 }

@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team5.justdoeat.order.entity.MenuCartEntity;
+import com.team5.justdoeat.order.entity.MenuOptionCartEntity;
 import com.team5.justdoeat.order.entity.OrderInfoEntity;
 import com.team5.justdoeat.order.repository.MenuCartRepository;
 import com.team5.justdoeat.order.repository.MenuOptionCartRepository;
 import com.team5.justdoeat.order.repository.OrderInfoRepository;
 import com.team5.justdoeat.order.vo.MenuInfoVO;
+import com.team5.justdoeat.order.vo.OptionInfo;
 import com.team5.justdoeat.order.vo.OrderInfoVO;
 import com.team5.justdoeat.store.repository.StoreInfoRepository;
 import com.team5.justdoeat.user.entity.UserInfoEntity;
@@ -55,7 +57,7 @@ public class orderService {
                                       userInfoEntity(userRepo.findByUiSeq(data.getUserSeq())).
                                       storeInfo(storeRepo.findBySiSeq(data.getStoreSeq())).build();
     orderRepo.save(orderEntity);
-    // addMenuCart(orderEntity, data.getMenuList());
+    addMenuCart(orderEntity, data.getMenuList());
     }
     resultMap.put("status",true);
     resultMap.put("message","댓글이 출력되었습니다");
@@ -64,16 +66,18 @@ public class orderService {
 
 
 
-  // private void addMenuCart(OrderInfoEntity orderEntity, List<MenuInfoVO> menuList) {
-  //   MenuInfoVO menuInfoVO;
-  //   for(int i = 0; i < menuList.size(); i++){
-  //     menuInfoVO = menuList.get(i);
-  //     MenuCartEntity menuCart = MenuCartEntity.builder().meSeq().mcMenuCnt().mcOiSeq().mcMiSeq().build();
-  //     menuInfoVO.getMenuCount();
-  //     menuInfoVO.getMenuSeq();
-  //     menuCartRepo.save();
-  //   }
-  // }
+  private void addMenuCart(OrderInfoEntity orderEntity, List<MenuInfoVO> menuList) {
+    MenuInfoVO menuInfoVO;
+    for(int i = 0; i < menuList.size(); i++){
+      menuInfoVO = menuList.get(i);
+      MenuCartEntity menuCart = MenuCartEntity.builder().mcSeq(null).mcMenuCnt(menuInfoVO.getMenuCount()).mcOiSeq(orderEntity.getOiSeq()).mcMiSeq(menuInfoVO.getMenuSeq()).build();
+      menuCart = menuCartRepo.save(menuCart);
+      for(int j = 0; j < menuInfoVO.getOptionList().size(); j++){
+        MenuOptionCartEntity menuOptionCart =  MenuOptionCartEntity.builder().mocSeq(null).mocMcSeq(menuCart.getMcSeq()).mocMoSeq(menuInfoVO.getOptionList().get(j).getOptionSeq()).build();
+        menuOpCartRepo.save(menuOptionCart);
+      }
+    }
+  }
 
 
 
