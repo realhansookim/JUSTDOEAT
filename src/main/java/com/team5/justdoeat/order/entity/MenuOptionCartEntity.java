@@ -15,17 +15,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "menu_cart")
+@Table(name = "menu_option_cart")
 @Builder
-public class MenuCartEntity {
+public class MenuOptionCartEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="mc_seq")       private Long meSeq;
-  @Column(name="mc_menu_cnt")       private Long mcMenuCnt;
-  @Column(name="mc_oi_seq")       private Long mcOiSeq;
-  @Column(name="mc_mi_seq")       private Long mcMiSeq;
+  @Column(name="moc_seq")       private Long mocSeq;
+  @Column(name="moc_mc_seq")       private Long mocMcSeq;
+  @Column(name="moc_mo_seq")       private Long mocMoSeq;
 }

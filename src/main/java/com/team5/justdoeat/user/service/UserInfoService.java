@@ -62,6 +62,43 @@ public class UserInfoService {
   }
   return map;
 }
+
+  public Map<String, Object> deleteUser(Long userNo) {
+    Map<String,Object> map = new LinkedHashMap<String,Object>();
+    UserInfoEntity entity = userRepo.findByUiSeq(userNo);
+    if(entity == null) {
+      map.put("status", false);
+      map.put("message", "잘못된 정보입니다.");
+    }
+    else {
+      map.put("status", true);
+      map.put("message", "탈퇴되었습니다.");
+      userRepo.delete(entity);
+    }
+    return map;
+  }
+
+  public Map<String, Object> updateUser(Long userNo, UserInfoEntity data) {
+    Map<String,Object> map = new LinkedHashMap<String,Object>();
+    UserInfoEntity entity = userRepo.findByUiSeq(userNo);
+    if(entity == null) {
+      map.put("status", false);
+      map.put("message", "잘못된 정보입니다.");
+    }
+    else {
+      map.put("status", true);
+      map.put("message", "수정되었습니다.");
+      if(data.getUiName() != null) entity.setUiName(data.getUiName());
+      if(data.getUiPwd() != null) entity.setUiPwd(data.getUiPwd());
+      if(data.getUiBirth() != null) entity.setUiBirth(data.getUiBirth());
+      if(data.getUiPhone() != null) entity.setUiPhone(data.getUiPhone());
+      if(data.getUiEmail() != null) entity.setUiEmail(data.getUiEmail());
+      userRepo.save(entity);
+    }
+    return map;
+  }
+
+
 // public Map<String, Object> getLoginList(HttpSession session) {
 //   Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
 //   UserInfoEntity loginUser = (UserInfoEntity) session.getAttribute("loginUser");

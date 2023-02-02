@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class MenuInfoVO {
   private Long menuSeq;
-  private Integer menuCount;
+  private Integer menuCnt;
   private List<OptionInfo> optionList;
 }
