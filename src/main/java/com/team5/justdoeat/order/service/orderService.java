@@ -1,6 +1,7 @@
 package com.team5.justdoeat.order.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,7 @@ public class orderService {
                                       oiAddress(data.getAddress()).
                                       oidetailAddress(data.getDetailAddress()).
                                       oiPhone(data.getPhone()).
-                                      oiRegDt(LocalDate.now()).
+                                      oiRegDt(LocalDateTime.now()).
                                       oiTotalPrice(data.getTotalPrice()).
                                       oideliveryFee(data.getDeliveryFee()).
                                       oiCoupon(data.getCoupon()).
