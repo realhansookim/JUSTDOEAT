@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "menu_cart")
 @Builder
-public class menuCartEntity {
+public class MenuCartEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name="mc_seq")       private Long meSeq;

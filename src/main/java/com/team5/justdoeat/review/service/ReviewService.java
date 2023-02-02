@@ -104,7 +104,7 @@ public class ReviewService {
                                         .rspQuantityScore(data.getQuantityScore())
                                         .rspDeliveryScore(data.getDeliveryScore())
                                         .riSiSeq(data.getUiSeq())
-                                        .riUiSeq(data.getSiSeq()).build();
+                                        .userInfo(userRepo.findByUiSeq(data.getSiSeq())).build();
         System.out.println(reviewInfo);
         reviewInfo = rInfoRepo.save(reviewInfo);
         resultMap = addReviewImage(file, files, reviewInfo);

@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "menu_option_cart")
 @Builder
-public class menuOptionCartEntity {
+public class MenuOptionCartEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name="moc_seq")       private Long mocSeq;
