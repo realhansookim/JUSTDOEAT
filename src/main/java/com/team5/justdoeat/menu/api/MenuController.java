@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -180,4 +182,37 @@ public class MenuController {
     return resultMap;
   }
   
+  @DeleteMapping("/delete")
+  public Map<String, Object> deleteMember(@RequestParam Long storeNo) {
+    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    MenuInfoEntity entity = mRepo.findByMiSeq(storeNo);
+    if(entity == null) {
+      resultMap.put("status", false);
+      resultMap.put("message", "번호를 다시 확인해주세요.");
+    }
+    else {
+      resultMap.put("status", true);
+      resultMap.put("message", "삭제되었습니다.");
+    }
+    return resultMap;
+  }
+
+  @PatchMapping("/update")
+  public Map<String,Object> updateMember(@RequestParam Long storeNo, @RequestBody MenuInfoEntity data) {
+    Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    MenuInfoEntity entity = mRepo.findByMiSeq(storeNo);
+    if(entity == null) {
+      resultMap.put("status", false);
+      resultMap.put("message", "번호를 다시 확인해주세요.");
+    }
+    else {
+      entity.setMiName(data.getMiName());
+      entity.setMiPrice(data.getMiPrice());
+      entity.setMiImg(data.getMiImg());
+      mRepo.save(entity);
+      resultMap.put("status", true);
+      resultMap.put("message", "수정되었습니다.");
+    }
+    return resultMap;
+  }
 }

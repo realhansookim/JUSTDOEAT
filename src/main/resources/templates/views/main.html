@@ -35,5 +35,15 @@
       </div>
     </nav>
   </header>
+  <div id="map" style="width:500px; height:400px";></div>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=a9b4660c9aa019fe96bcbdbab58f51ed"></script>
+  <script>
+    const container = document.getElementById('map'); 
+    let options = { 
+	  center: new kakao.maps.LatLng(35.868533444302216, 128.59368500531235), 
+	  level: 3 
+    };
+    let map = new kakao.maps.Map(container, options); 
+  </script>
 </body>
 </html>

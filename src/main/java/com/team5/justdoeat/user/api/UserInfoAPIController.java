@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -167,6 +169,18 @@ return map;
         map.put("msg", "가입 가능한 번호입니다.");
       }
       return new ResponseEntity<Object>(map,HttpStatus.OK); 
+    }
+
+    @DeleteMapping("/delete")
+    public Map<String, Object> deleteUser(@RequestParam Long userNo) {
+      Map<String,Object> map = uService.deleteUser(userNo);
+      return map;
+    }
+
+    @PatchMapping("/update")
+    public Map<String, Object> updateUser(@RequestParam Long userNo, @RequestBody UserInfoEntity data) {
+      Map<String,Object> map = uService.updateUser(userNo, data);
+      return map;
     }
 }
 
