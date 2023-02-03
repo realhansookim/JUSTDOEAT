@@ -10,5 +10,7 @@ import com.team5.justdoeat.user.entity.UserInfoEntity;
 public interface OrderInfoRepository extends JpaRepository<OrderInfoEntity, Long>{
 
   List<OrderInfoEntity> findByUserInfoEntity(UserInfoEntity uiSeq);
+
+  OrderInfoEntity findByOiName(String orderSeq);
   
 }

@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.team5.justdoeat.review.repository.ReviewInfoRepository;
 import com.team5.justdoeat.review.service.ReviewService;
+import com.team5.justdoeat.review.vo.ReviewDeleteVO;
 import com.team5.justdoeat.review.vo.ReviewInfoVO;
 
 import io.micrometer.common.lang.Nullable;
@@ -126,8 +127,8 @@ public class ReviewController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Object> deleteReview(){
-    return new ResponseEntity<>(reviewService.deleteReview(), HttpStatus.OK);
+    public ResponseEntity<Object> deleteReview(@RequestBody ReviewDeleteVO reviewDeleteVO){
+    return new ResponseEntity<>(reviewService.deleteReview(reviewDeleteVO), HttpStatus.OK);
 
     }
   }

@@ -25,6 +25,8 @@ public interface ReviewInfoRepository extends JpaRepository <ReviewInfoEntity, L
 
   public List<ReviewInfoEntity> findByRiSiSeq(Long riSiSeq);
 
+  public ReviewInfoEntity findByUserInfoAndRiSeq(UserInfoEntity userInfoEntity, Long userSeq);
+
   // @Query(value = "select ri_seq, ri_reg_dt, ri_content,ri_all_score, ri_taste_score, ri_quantity_score ,ri_delivery_score, ui_id, ui_name, ui_gen, ui_status from" 
   // +" review_info a join user_info b on ri_ui_seq = b.ui_seq where ri_si_seq  like :storeNo", nativeQuery = true)
   // public List<Map<String, Object>> getReviewList(@Param(value = "storeNo") Long storeNo);

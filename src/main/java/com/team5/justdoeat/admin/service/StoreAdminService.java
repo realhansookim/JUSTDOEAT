@@ -58,7 +58,7 @@ public class StoreAdminService {
         map.put("msg", "가게 이름에 특수문자 또는 공백문자를 입력할 수 없습니다.");
         }
         else{
-          StoreEntity e = entity.get();
+          StoreEntity e = entity;
           e.setSiName(data.getSi_name());
           e.setSiMinDeliveryTime(data.getSi_min_delivery_time());
           e.setSiMaxDeliveryTime(data.getSi_max_delivery_time());

@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicInsert;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.team5.justdoeat.order.entity.OrderInfoEntity;
 import com.team5.justdoeat.store.entity.StoreInfoEntity;
 import com.team5.justdoeat.user.entity.UserInfoEntity;
 
@@ -53,7 +54,7 @@ public class ReviewInfoEntity {
   // @ManyToOne @JoinColumn(name = "ri_si_seq" ) StoreInfoEntity storeInfo;
   // @ManyToMany(mappedBy = "rimg_ri_seq") List<ReviewImgEntity> ImageInfo = new ArrayList<>();
   // @JsonManagedReference
-  @OneToMany(mappedBy = "reviewInfo") private List<ReviewImgEntity> ImageInfo = new ArrayList<>();
+  @OneToMany(mappedBy = "reviewInfo",cascade = CascadeType.ALL) private List<ReviewImgEntity> ImageInfo = new ArrayList<>();
   // @OneToMany(mappedBy = "reviewInfo") List<ReviewImgEntity> reviews = new ArrayList<>();
 
   public ReviewInfoEntity(LocalDate riRegDt,String riContent,String riOrderNumber,StoreInfoEntity storeInfo, UserInfoEntity userInfo){

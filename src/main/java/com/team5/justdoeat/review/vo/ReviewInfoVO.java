@@ -21,6 +21,5 @@ public class ReviewInfoVO {
     private Double tasteScore;
     private Double quantityScore;
     private Double deliveryScore;
-    private Long uiSeq;
-    private Long siSeq;
+    private String orderSeq;
 }

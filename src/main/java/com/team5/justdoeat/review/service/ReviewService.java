@@ -20,8 +20,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.team5.justdoeat.order.entity.OrderInfoEntity;
+import com.team5.justdoeat.order.repository.OrderInfoRepository;
 import com.team5.justdoeat.review.entity.ReviewImgEntity;
 import com.team5.justdoeat.review.entity.ReviewInfoEntity;
 import com.team5.justdoeat.review.entity.ReviewListEntity;
@@ -29,6 +32,7 @@ import com.team5.justdoeat.review.repository.ReviewImgRepository;
 import com.team5.justdoeat.review.repository.ReviewInfoRepository;
 import com.team5.justdoeat.review.repository.ReviewListRepository;
 import com.team5.justdoeat.review.vo.LoginUserVO;
+import com.team5.justdoeat.review.vo.ReviewDeleteVO;
 import com.team5.justdoeat.review.vo.ReviewInfoVO;
 import com.team5.justdoeat.review.vo.ReviewListVO;
 import com.team5.justdoeat.review.vo.ReviewUserVO;
@@ -53,37 +57,10 @@ public class ReviewService {
     // @Autowired
     // OrderInfoRepository orderRepo;
 
-    // // @Autowired
-    // // OrderInfoRepository orderRepo;
+    @Autowired
+    OrderInfoRepository orderRepo;
 
-    // public Map<String, Object> addReviews( ReviewInfoVO data,  MultipartFile file,
-    //         List<MultipartFile> files) {
-    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    //     if (data == null) {
-    //         resultMap.put("status", false);
-    //         resultMap.put("code", HttpStatus.NOT_FOUND);
-    //         resultMap.put("msg", "빈값이거나 로그인정보를 찾을수 없습니다");
-    //         return resultMap;
-    //     }
-    //     OrderInfoEntity orderEntity = orderRepo.findByOrName(data.getOrderSeq());
-    //     System.out.println(data);
-    //     ReviewInfoEntity reviewInfo = ReviewInfoEntity.builder()
-    //                                     .riSeq(null)
-    //                                     .riRegDt(data.getRegDt())
-    //                                     .riContent(data.getContent())
-    //                                     .rspAllScore(data.getAllScore())
-    //                                     .rspTasteScore(data.getTasteScore())
-    //                                     .rspQuantityScore(data.getQuantityScore())
-    //                                     .rspDeliveryScore(data.getDeliveryScore())
-    //                                     .riSiSeq(orderEntity.getOiSiSeq())
-    //                                     .riUiSeq(orderEntity.getOiUiSeq())
-    //                                     .riOerderSeq(data.getOrderSeq()).build();
-    //     reviewInfo = rInfoRepo.save(reviewInfo);
-    //     resultMap = addReviewImage(file, files, reviewInfo);
-    //     return resultMap;
-    // }
-
-        public Map<String, Object> addReviews( ReviewInfoVO data,  MultipartFile file,
+    public Map<String, Object> addReviews( ReviewInfoVO data,  MultipartFile file,
             List<MultipartFile> files) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
         if (data == null) {
@@ -92,9 +69,8 @@ public class ReviewService {
             resultMap.put("msg", "빈값이거나 로그인정보를 찾을수 없습니다");
             return resultMap;
         }
-        // OrderInfoEntity orderEntity = orderRepo.findByOrName(data.getOrderSeq());
-        System.out.println(data);
-        System.out.println("=================================");
+        OrderInfoEntity orderEntity = orderRepo.findByOiName(data.getOrderSeq());
+        System.out.println(orderEntity);
         ReviewInfoEntity reviewInfo = ReviewInfoEntity.builder()
                                         .riSeq(null)
                                         .riRegDt(data.getRegDt())
@@ -103,13 +79,41 @@ public class ReviewService {
                                         .rspTasteScore(data.getTasteScore())
                                         .rspQuantityScore(data.getQuantityScore())
                                         .rspDeliveryScore(data.getDeliveryScore())
-                                        .riSiSeq(data.getUiSeq())
-                                        .userInfo(userRepo.findByUiSeq(data.getSiSeq())).build();
-        System.out.println(reviewInfo);
+                                        .riSiSeq(orderEntity.getStoreInfo().getSiSeq())
+                                        .userInfo(orderEntity.getUserInfoEntity())
+                                        .riOerderSeq(orderEntity.getOiName()).build();
         reviewInfo = rInfoRepo.save(reviewInfo);
         resultMap = addReviewImage(file, files, reviewInfo);
         return resultMap;
     }
+
+    //     public Map<String, Object> addReviews( ReviewInfoVO data,  MultipartFile file,
+    //         List<MultipartFile> files) {
+    //     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+    //     if (data == null) {
+    //         resultMap.put("status", false);
+    //         resultMap.put("code", HttpStatus.NOT_FOUND);
+    //         resultMap.put("msg", "빈값이거나 로그인정보를 찾을수 없습니다");
+    //         return resultMap;
+    //     }
+    //     // OrderInfoEntity orderEntity = orderRepo.findByOrName(data.getOrderSeq());
+    //     System.out.println(data);
+    //     System.out.println("=================================");
+    //     ReviewInfoEntity reviewInfo = ReviewInfoEntity.builder()
+    //                                     .riSeq(null)
+    //                                     .riRegDt(data.getRegDt())
+    //                                     .riContent(data.getContent())
+    //                                     .rspAllScore(data.getAllScore())
+    //                                     .rspTasteScore(data.getTasteScore())
+    //                                     .rspQuantityScore(data.getQuantityScore())
+    //                                     .rspDeliveryScore(data.getDeliveryScore())
+    //                                     .riSiSeq(data.getUiSeq())
+    //                                     .userInfo(userRepo.findByUiSeq(data.getSiSeq())).build();
+    //     System.out.println(reviewInfo);
+    //     reviewInfo = rInfoRepo.save(reviewInfo);
+    //     resultMap = addReviewImage(file, files, reviewInfo);
+    //     return resultMap;
+    // }
 
     public Map<String, Object> addReviewImage(MultipartFile file, List<MultipartFile> files,
             ReviewInfoEntity reviewInfo) {
@@ -242,9 +246,18 @@ public class ReviewService {
         return resultMap;
     }
 
-    public Map<String, Object> deleteReview() {
+    public Map<String, Object> deleteReview(ReviewDeleteVO reviewDeleteVO) {
         Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-
+        if (reviewDeleteVO == null){
+            resultMap.put("status",false);
+            resultMap.put("message","등록된 댓글이없습니다");
+            return resultMap;
+        }
+    ;
+        ReviewInfoEntity entity = rInfoRepo.findByUserInfoAndRiSeq(userRepo.findByUiSeq(reviewDeleteVO.getUserSeq()), reviewDeleteVO.getReviewSeq());
+        rInfoRepo.delete(entity);
+        resultMap.put("status",true);
+        resultMap.put("message","삭제되었습니다");  
         return resultMap;
     }
 
