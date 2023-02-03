@@ -52,9 +52,8 @@ public class StoreAdminService {
       
       public Map<String,Object> updateStoreInfo(StoreUpdateVO data){
         Map<String,Object> map = new LinkedHashMap<String,Object>();
-        StoreEntity entity = sRepo.findBySiName(data.getSi_name());
-        String pattern = "^[0-9|a-z|A-Z|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$";
-       if(data.getSi_name().replaceAll(" ","").length() == 0 || !Pattern.matches(pattern,data.getSi_name())){
+        StoreEntity entity = sRepo.findBySiSeq(data.getSi_seq());
+       if(data.getSi_name().replaceAll(" ","").length() == 0){
         map.put("status", false);
         map.put("msg", "가게 이름에 특수문자 또는 공백문자를 입력할 수 없습니다.");
         }

@@ -10,6 +10,8 @@ import com.team5.justdoeat.menu.entity.MenuInfoEntity;
 import com.team5.justdoeat.menu.repository.MenuInfoRepository;
 import com.team5.justdoeat.store.entity.StoreDetailEntity;
 import com.team5.justdoeat.store.repository.StoreDetailRepository;
+import com.team5.justdoeat.user.entity.UserInfoEntity;
+import com.team5.justdoeat.user.repository.UserInfoRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,7 @@ public class PatchController {
   private final StoreDetailRepository storeDetailRepo; 
   // private final MenuInfoRepository menuInfoRepo;
   private final MenuInfoRepository menuinfoRepo;
+  private final UserInfoRepository userRepo;
 
 
   @GetMapping("/patch")
@@ -51,6 +54,21 @@ public class PatchController {
       
     }
     menuinfoRepo.saveAll(listAll);
+    return "finished!";
+
+}
+  @GetMapping("/patcher1")
+  public String patchLineBreaker1() {
+    List<UserInfoEntity> listAll = userRepo.findAll();
+    for(UserInfoEntity entity : listAll) {
+      String alarm = entity.getUiPhone();
+      alarm = alarm.replaceAll("-", "");
+      alarm = alarm.replaceAll("(요기요 제공 번호)", "");
+      System.out.println(alarm);
+      entity.setUiPhone(alarm);
+      
+    }
+    userRepo.saveAll(listAll);
     return "finished!";
 
 }
