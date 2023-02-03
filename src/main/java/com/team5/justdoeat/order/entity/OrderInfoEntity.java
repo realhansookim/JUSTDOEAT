@@ -1,6 +1,7 @@
 package com.team5.justdoeat.order.entity;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.team5.justdoeat.store.entity.StoreInfoEntity;
 import com.team5.justdoeat.user.entity.UserInfoEntity;
@@ -33,7 +34,7 @@ public class OrderInfoEntity {
 @Column(name ="oi_address") private String oiAddress;
 @Column(name ="oi_detail_address") private String oidetailAddress;
 @Column(name ="oi_phone") private String oiPhone;
-@Column(name ="oi_reg_dt") private LocalDate oiRegDt;
+@Column(name ="oi_reg_dt") private LocalDateTime oiRegDt;
 @Column(name ="oi_total_price") private Integer oiTotalPrice;
 @Column(name ="oi_delivery_fee") private Integer oideliveryFee;
 @Column(name ="oi_coupon") private String oiCoupon;
