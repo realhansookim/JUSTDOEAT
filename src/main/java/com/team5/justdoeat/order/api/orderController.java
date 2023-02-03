@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team5.justdoeat.order.entity.OrderInfoEntity;
+import com.team5.justdoeat.order.entity.OrderListEntity;
 import com.team5.justdoeat.order.repository.OrderInfoRepository;
+import com.team5.justdoeat.order.repository.OrderListRepository;
 import com.team5.justdoeat.order.service.orderService;
 import com.team5.justdoeat.order.vo.OrderInfoVO;
 import com.team5.justdoeat.user.entity.UserInfoEntity;
@@ -34,14 +36,25 @@ public class orderController {
     return new ResponseEntity<>(resultMap, HttpStatus.OK);
   }
 
-  @Autowired UserInfoRepository uRepo;
-  @Autowired OrderInfoRepository repo;
+  // @Autowired UserInfoRepository uRepo;
+  // @Autowired OrderInfoRepository repo;
+  // @GetMapping("/list")
+  // public Map<String, Object> listOrder(@RequestParam Long userNo) {
+  //   Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
+  //   UserInfoEntity entity = uRepo.findByUiSeq(userNo);
+  //   List<OrderInfoEntity> result = repo.findByUserInfoEntity(entity);
+  //   resultMap.put("list", result);
+  //   return resultMap;
+  // }
+
+  @Autowired OrderListRepository orderRepo;
   @GetMapping("/list")
   public Map<String, Object> listOrder(@RequestParam Long userNo) {
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
-    UserInfoEntity entity = uRepo.findByUiSeq(userNo);
-    List<OrderInfoEntity> result = repo.findByUserInfoEntity(entity);
-    resultMap.put("list", result);
+    List<OrderListEntity> entity = orderRepo.findByUiSeq(userNo);
+    resultMap.put("status", true);
+    resultMap.put("totalCnt", entity.size());
+    resultMap.put("list", entity);
     return resultMap;
   }
 }

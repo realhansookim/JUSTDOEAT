@@ -36,13 +36,11 @@ public class orderService {
   public Map<String, Object> addOrderInfo(OrderInfoVO data) {
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
     if (data == null){
-      System.out.println(data);
       resultMap.put("status",false);
       resultMap.put("message","주문이 실패하였습니다");
       return resultMap;
     }
     else{
-      System.out.println(data);
       OrderInfoEntity orderEntity = OrderInfoEntity.builder().
                                       oiSeq(null).
                                       oiRequest(data.getRequest()).
