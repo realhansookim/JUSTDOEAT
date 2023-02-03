@@ -1,7 +1,6 @@
 package com.team5.justdoeat.order.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,18 +17,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "menu_cart")
+@Table(name = "order_option_list")
 @Builder
-public class MenuCartEntity {
+public class OrderOptionList {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name="mc_seq")       private Long mcSeq;
-  @Column(name="mc_oi_seq")       private Long mcOiSeq;
-  @Column(name="mc_mi_seq")       private Long mcMiSeq;
-  @Column(name="mc_menu_cnt")       private Integer mcMenuCnt;
-  @ManyToMany(mappedBy = "mocMcSeq") List<MenuOptionCartEntity> optionList = new ArrayList<>();
+  @Column(name="moc_seq") @JsonIgnore       private Long mocSeq;
+  @Column(name="moc_mc_seq") @JsonIgnore       private Long mocMcSeq;
+  @Column(name="moc_mo_seq") @JsonIgnore       private Long mocMoSeq;
+  @Column(name="mo_name")       private String moName;
+  @Column(name="mo_price")       private Integer moPrice;
 }

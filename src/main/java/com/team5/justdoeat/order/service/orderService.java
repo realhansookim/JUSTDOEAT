@@ -1,6 +1,7 @@
 package com.team5.justdoeat.order.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,13 +36,11 @@ public class orderService {
   public Map<String, Object> addOrderInfo(OrderInfoVO data) {
     Map<String, Object> resultMap = new LinkedHashMap<String, Object>();
     if (data == null){
-      System.out.println(data);
       resultMap.put("status",false);
       resultMap.put("message","주문이 실패하였습니다");
       return resultMap;
     }
     else{
-      System.out.println(data);
       OrderInfoEntity orderEntity = OrderInfoEntity.builder().
                                       oiSeq(null).
                                       oiRequest(data.getRequest()).
@@ -49,7 +48,7 @@ public class orderService {
                                       oiAddress(data.getAddress()).
                                       oidetailAddress(data.getDetailAddress()).
                                       oiPhone(data.getPhone()).
-                                      oiRegDt(LocalDate.now()).
+                                      oiRegDt(LocalDateTime.now()).
                                       oiTotalPrice(data.getTotalPrice()).
                                       oideliveryFee(data.getDeliveryFee()).
                                       oiCoupon(data.getCoupon()).
