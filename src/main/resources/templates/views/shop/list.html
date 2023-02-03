@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>가게리스트</title>
+</head>
+<body>
+    <h1>JUSTDOEAT</h1>
+    <table>
+        <style>
+          h1{text-align: center;}
+          th{background-color: antiquewhite; padding: 20px;}
+          td{text-align: center; border-bottom: 1px; background-color: wheat;padding: 10px;}
+          table{border-collapse: collapse; width: 1300px; margin: 10px auto; background-color: aquamarine;}
+          .serch_area, .pager_area {text-align: center;}
+          .box{display: inline-block; border-radius:5px; display: inline-block;
+          padding: 7fz 12px;
+        color: blueviolet;}
+        .normal{background-color: chocolate;}
+        .banned{background-color: cornflowerblue;}
+        .exit{background-color: cadetblue;}
+        .member{background-color: darkgoldenrod;}
+        .sajang{background-color: cyan;}
+        .master{background-color: darkgreen;}
+        </style>
+        <thead>
+          <th>번호</th>
+          <th>가게이름</th>
+          <th>최소 배달 시간</th>
+          <th>최대 배달 시간</th>
+          <th>최소 주문금액</th>
+          <th colspan="3">가게 상태 변경</th>
+          <th>삭제</th>
+        </thead>
+          <tbody>
+            <tr th:each="store : ${result.list}">
+              <td th:text="${store.siSeq}"></td>
+              <td>
+                <a th:text="${store.siName}" th:href="@{/shop/detail(siSeq=${store.siSeq})}"></a>
+              </td>
+              <td th:text="${store.siMinDeliveryTime}"></td>
+              <td th:text="${store.siMaxDeliveryTime}"></td>
+              <td th:text="${store.siMinPrice}"></td>
+              <td th:text="${store.siStatus}"></td>
+              <td>
+                <th:block th:if="${store.siStatus == 0}"><span class="box normal">정상</span></th:block>
+                <th:block th:if="${store.siStatus == 1}"><span class="box ready">영업준비중</span></th:block>
+              </td>
+              <td>
+                <a th:href="@{/shop/update/status?value=0(siSeq=${store.siSeq},page=${result.currentPage},keyword=${keyword})}">정상으로 변경</a>
+                <a th:href="@{/shop/update/status?value=1(siSeq=${store.siSeq},page=${result.currentPage},keyword=${keyword})}">영업준비중으로 변경</a>
+              </td>
+              <td>
+                <a th:href="@{/shop/delete(siSeq=${store.siSeq},page=${result.currentPage},keyword=${keyword})}">가게삭제</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pager_area">
+          <form action="/shop/list" method="get" id="search_form">
+            <input type="text" name="keyword" placeholder="가게검색"><button>검색</button>
+          </form>
+          <th:block th:each="i : ${#numbers.sequence(0,result.totalPage-1)}">
+            <th:block th:if="${result.totalPage>0}">
+              <th:block th:if="${keyword == null ||keyword == ''}">
+              <a th:href="@{/shop/list(page=${i})}" th:text="${i+1}"></a>
+            </th:block>
+            <th:block th:if="${keyword != null && keyword != ''}">
+            <a th:href="@{/shop/list(page=${i},keyword=${keyword})}" th:text="${i+1}"></a>
+          </th:block>
+        </th:block>
+      </th:block>
+        </div>
+</body>
+</html>
